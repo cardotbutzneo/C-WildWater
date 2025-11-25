@@ -1,5 +1,10 @@
 #ifndef MAIN_H
 #define MAIN_H
 #include <stdio.h>
-// prototypes ici
+
+typedef struct _noeud{
+
+};
+
+
 #endif
