@@ -1,5 +1,11 @@
 #!/bin/bash
 source ./bash/cmd.sh
+source ./bash/fonction.sh
+
+#exemple de lancement ./launch.sh [arg1 : cmd] [arg2 : help]
+
+#on vérifit les dépendances avant le lancement
+#verifDependance
 
 if [ "$2" = "--help" ] || [ "$2" = "-h" ];then
     aide "$1"
@@ -31,7 +37,7 @@ elif [ "$1" = "leaks" ];then
     else #fonction
     echo "appel de la fonction pour leaks"
     fi
-elif [ "$1" = "-r" ] || [ -z "$1" ];then
+elif [ "$1" = "-r" ] || [ "$1" = "--run" ] || [ -z "$1" ];then
     make
 elif [ "$1" = "-c" ] || [ "$1" = "--clean" ];then
     make clean 
