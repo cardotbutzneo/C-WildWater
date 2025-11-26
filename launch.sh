@@ -12,6 +12,9 @@ if [ "$2" = "--help" ] || [ "$2" = "-h" ];then
     aide "$1"
     exit 0
 elif [ "$1" = "-h" ] || [ "$1" = "--help" ];then
+    if [ -z "$2" ];then
+        echo "exemple d'utilisation : <./launch.sh [arg1 : cmd] [arg2 : help]>"
+    fi
     if [ "$2" = "-a" ] || [ "$2" = "--all" ];then
         afficherDoc
         exit 0
