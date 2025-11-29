@@ -89,14 +89,7 @@
 //    return a; 
 // }     
 
-//pAVL insertionAVL(pAVL a, pUsine usine, int* h){
-//   if (usine == NULL){
-//       return a;
-//   }
-//   if (a == NULL){
-//       *h=1;
-//       return creerAVL(usine);
-//   }
-// 
+ 
+
 
 
