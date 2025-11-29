@@ -64,3 +64,8 @@ afifchageInit(){
     echo
     echo "Go outside touching grass, lol player 🐒 🐒"
 }
+
+afficherErreur(){
+    if [ -z "$1" ];then
+        echo "missing arugment in printError" >> 
+}
