@@ -76,10 +76,14 @@ elif [ "$1" = "--arbo" ] && [ "$#" -eq 1 ];then
     exit 0
 elif [ "$1" = "histo" ] && [ $verif_flag -eq 0 ];then #non acces aux graphiques si gnuplot n'est pas installé
     creerFichierData "$2"
+    if [ "$?" -ne 0 ];then
+        exit 1
+    fi
     if [ "$2" = "max" ];then
     #fonction
-    echo "appel de la fonction pour max"
-    exit 0
+        echo "appel de la fonction pour max"
+        gnuplot -c gnuplot/test.gp max
+        exit 0
     elif [ "$2" = "src" ];then
     echo "appel de la fonction pour src"
     #fonction
