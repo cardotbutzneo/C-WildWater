@@ -36,7 +36,10 @@ if [ "$1" = "-r" ] || [ "$1" = "--run" ]; then
     exit 0
 fi
 
-if [ "$1" = "-c" ] || [ "$1" = "--clean" ]; then
+if [ "$2" = "--help" ] || [ "$2" = "-h" ];then
+    aide "$1"
+    exit 0
+elif [ "$1" = "-c" ] || [ "$1" = "--clean" ]; then
     if [ "$2" != "-a" ] && [ "$2" != "--all" ] && [ -n "$2" ]; then
         echo "Erreur : l'option '$1' ne doit être suivie que par -a/--all ou aucun argument."
         echo "Utilisation correcte : ./launch.sh -c ou ./launch.sh --clean [-a|--all]"
@@ -48,17 +51,14 @@ if [ "$1" = "-c" ] || [ "$1" = "--clean" ]; then
     # Si -a ou --all est passé, supprime les graphiques sans demander
     if [ "$2" = "-a" ] || [ "$2" = "--all" ]; then
         echo "Suppression des graphiques et des données..."
-        rm -rf gnuplot/data/* 2>/dev/null
+        rm -rf gnuplot/graphique/* 2>/dev/null
         if [ $? -eq 0 ]; then
             echo "Suppression des graphiques réussie" >> output/stdout
         else
-            echo "Aucun dossier gnuplot/data à supprimer" >> output/stdout
+            echo "Aucun dossier gnuplot/graphique à supprimer" >> output/stdout
         fi
     fi
 
-elif [ "$2" = "--help" ] || [ "$2" = "-h" ];then
-    aide "$1"
-    exit 0
 elif [ "$1" = "-h" ] || [ "$1" = "--help" ];then
     if [ -z "$2" ];then
         echo "exemple d'utilisation : <./launch.sh [arg1 : cmd] [arg2 : help]>"
