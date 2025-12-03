@@ -2,9 +2,10 @@
 #define AVL_H
 #include "main.h"
 
-typedef struct _noeud{
+
+/* typedef struct _noeud{
     int val;
-}Noeud;
+}Noeud; 
 
 typedef struct Usine {
     unsigned long identifiant;
@@ -61,12 +62,35 @@ typedef struct Usager {
     //struct Usager *droite;
 } Usager;
 
+
+
     typedef struct Usine* pUsine;
     typedef struct Source* pSource;
     typedef struct Stockage* pStockage;
     typedef struct Jonction* pJonction;
     typedef struct Raccordement* pRaccordement;
     typedef struct Usager* pUsager;
+*/
 
 
+
+/*
+typedef struct Usine {
+    char* id;
+    unsigned long capacite;
+    unsigned long v_max;
+    unsigned long v_capte;
+} Usine;
+
+typedef struct Usine* pUsine;
+
+typedef struct AVL {
+    pUsine Usine;
+    int eq;
+    struct AVL* fd;
+    struct AVL* fg;
+} AVL;
+
+typedef struct AVL* pAVL   */
 #endif
+
