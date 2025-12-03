@@ -89,7 +89,20 @@
 //    return a; 
 // }     
 
- 
+// void libererAVL(pAVL a){
+//    if(a == NULL){
+//       return;
+//    }
+//    if(a->fd != NULL){
+//       libererAVL(a->fd);
+//    }
+//    if(a->fg != NULL){
+//       libererAVL(a->fg);
+//    }
+//    free(avl->usine);
+//    free(avl);
+// }
+
 
 
 
