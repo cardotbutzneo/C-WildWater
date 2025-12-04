@@ -6,7 +6,7 @@
 #include <time.h>
 
 // include librairie perso
-#include "avl.h"
+#include "arbres.h"
 
 // structures
 
