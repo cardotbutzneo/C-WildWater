@@ -15,7 +15,7 @@ typedef struct{
     unsigned long v_capte;
 } Usine;
 
-typedef struct Usine* pUsine;
+typedef Usine* pUsine;
 
 typedef struct AVL {
     pUsine usine;

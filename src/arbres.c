@@ -61,7 +61,7 @@ pAVL rotationDroite(pAVL a){
     eq_p = z;
  }
  return pivot;
-
+}
  pAVL doubleRotationGauche(pAVL a){
    a->fd = rotationDroite(a->fd);
    return rotationGauche(a);
@@ -102,7 +102,7 @@ void libererAVL(pAVL a){
     free(a->usine);
     free(a); 
 }
-
+/*
 void parcoursAVL(pAVL a){
    if(a == NULL){
       return;
@@ -111,7 +111,7 @@ void parcoursAVL(pAVL a){
    parcoursAVL(a->fd);
    parcoursAVL(a->fg);
 }
-
+*/
 
 
 
