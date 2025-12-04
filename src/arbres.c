@@ -1,5 +1,5 @@
 #include "main.h"
-#include "avl.
+#include "arbres.h"
 pAVL creerAVL(pUsine Usine) {
   if (usine == NULL){
       return NULL;
@@ -102,6 +102,7 @@ void libererAVL(pAVL a){
     free(avl->usine);
     free(avl); 
 }
+
 
 
 
