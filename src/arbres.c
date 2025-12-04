@@ -33,7 +33,7 @@ pAVL rotationGauche(pAVL a){
  if (x <= y && x <= z){
     eq_p = x;
  } else if (y <= x && y <= z) {
-/    eq_p = y;
+   eq_p = y;
  } else if (z <= x && z <= y) {
     eq_p = z;
  }
@@ -69,7 +69,7 @@ pAVL rotationDroite(pAVL a){
 
 pAVL doubleRotationDroite(pAVL a){
    a->fg = rotationGauche(a->fg);
-   return rotationDroie(a);
+   return rotationDroite(a);
  }
 
 pAVL equilibrerAVL(pAVL a) {
@@ -99,8 +99,8 @@ void libererAVL(pAVL a){
     if(a->fg != NULL){
        libererAVL(a->fg);
     }
-    free(avl->usine);
-    free(avl); 
+    free(a->usine);
+    free(a); 
 }
 
 void parcoursAVL(pAVL a){
@@ -111,6 +111,7 @@ void parcoursAVL(pAVL a){
    parcoursAVL(a->fd);
    parcoursAVL(a->fg);
 }
+
 
 
 
