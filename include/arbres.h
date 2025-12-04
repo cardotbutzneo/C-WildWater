@@ -1,8 +1,14 @@
 #ifndef AVL_H
 #define AVL_H
 #include "main.h"
-   
-typedef struct Usine {
+
+typedef struct{
+    char* Nom;
+    int a;
+}Struct;
+
+
+typedef struct{
     char* id;
     unsigned long capacite;
     unsigned long v_traite;
