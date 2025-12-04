@@ -4,7 +4,7 @@ pAVL creerAVL(pUsine usine) {
   if (usine == NULL){
       return NULL;
   }
-  pUsine nouveau = NULL; 
+  pAVL nouveau = NULL; 
   nouveau = malloc(sizeof(Usine));
   if (nouveau == NULL){
       printf("Erreur d'allocation de mémoire");
@@ -111,6 +111,7 @@ void parcoursAVL(pAVL a){
    parcoursAVL(a->fd);
    parcoursAVL(a->fg);
 }
+
 
 
 
