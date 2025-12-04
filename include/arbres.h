@@ -2,6 +2,9 @@
 #define AVL_H
 #include "main.h"
 
+typedef struct Sources {
+    
+
 typedef struct Usine {
     char* id;
     unsigned long capacite;
@@ -19,7 +22,10 @@ typedef struct AVL {
 } AVL;
 
 typedef struct AVL* pAVL   
+
+
 #endif
+
 
 
 
