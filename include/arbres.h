@@ -15,16 +15,17 @@ typedef struct Usine {
 typedef struct Usine* pUsine;
 
 typedef struct AVL {
-    pUsine Usine;
+    pUsine usine;
     int eq;
     struct AVL* fd;
     struct AVL* fg;
 } AVL;
 
-typedef struct AVL* pAVL   
+typedef struct AVL* pAVL;   
 
 
 #endif
+
 
 
 
