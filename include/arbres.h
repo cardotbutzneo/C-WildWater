@@ -46,12 +46,12 @@ typedef struct AVL {
 } AVL;
 
 typedef struct AVL* pAVL;   
-
+/*
 typedef struct {
     char* id;
     char* 
 }
-
+*/
 
 
 #endif
