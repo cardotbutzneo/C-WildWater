@@ -105,3 +105,32 @@ afifchageInit(){
     echo
     echo "Go outside touching grass, lol player 🐒 🐒"
 }
+
+ /* OUTPUT = "output"
+ ERRF= "$OUTPUT/stderr.txt"
+
+erreur(){
+    echo "[ERREUR] : $message" >> "$ERRF"
+} */
+
+/* filtrage() {
+
+    # Vérification du nombre d'arguments
+    if (( $# != 1 )); then
+        echo "Usage: filtrage <numero_colonne>"
+        return 1
+    fi
+    
+    # Vérification que l'argument est un entier entre 1 et 5
+    if ! [[ $1 =~ ^[1-5]$ ]]; then
+        echo "Erreur : l'argument doit être un nombre entre 1 et 5"
+        return 1
+    fi
+    echo "Filtrage des lignes correspondant au pattern :"
+    grep -E "^-;[^-;]+;-;[^;]*;[^;]*" ./c-wildwater_v0.dat
+    echo "Colonne $1 ignorée"
+    cut -d ';' -f1-5 --complement -f"$1" ./c-wildwater_v0.dat
+}
+}
+
+*/

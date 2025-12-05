@@ -39,3 +39,13 @@ void récupérer_min(pAVL avl, Dictionnaire dict[MAX_CMP], int* cmp_min) { // r�
 
     récupérer_min(avl->fd, dict, cmp_min);
 }
+
+int fichier(){
+    FILE *f = fopen("log.txt", "w+");
+    if (f == NULL) {
+        printErrreur("Erreur lors de l'ouverture du fichier log.txt\n");
+        return 0;
+    }
+    fprintf(f, "Erreur lors de l'allocation mémoire\n");
+    fclose(f);
+}
