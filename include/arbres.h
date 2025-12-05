@@ -7,36 +7,22 @@ typedef struct{
     unsigned long valeur;
 }Dictionnaire;
 
-typedef enum {
-    SOURCE,
-    USINE,
-    STORAGE,
-    JUNCTION,
-    SERVICE,
-    USER
-} NodeType;
-
-typedef struct Node {
-    char *id;
-    NodeType type;
-} Node;
-
-typedef struct _troncon {
-    char *id;
-    
-} Troncon;
-
-
 typedef struct{
     char* id;
-    Troncon *sources;
-    Troncon *stockage;
     double capacite;
     double v_traite;
     double v_capte;
 } Usine;
 
 typedef Usine* pUsine;
+
+typedef struct _troncons{
+    pUsine usine;
+    char* id_amont;
+    char *id_aval;
+    double volume;
+    float fuite;
+}Troncons;
 
 typedef struct AVL {
     pUsine usine;

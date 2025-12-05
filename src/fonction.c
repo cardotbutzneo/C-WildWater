@@ -49,3 +49,8 @@ int fichier(){
     fprintf(f, "Erreur lors de l'allocation mémoire\n");
     fclose(f);
 }
+
+void ajouterArbreHierarchique(char* id){
+    pUsine parent = récupérerParent(id);
+    
+}
