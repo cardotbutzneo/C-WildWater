@@ -19,15 +19,7 @@ void récupérer_max(pAVL avl, Dictionnaire dict[MAX_CMP], int* cmp_max) { // r�
         dict[*cmp_max].cle = avl->usine->id;
         dict[*cmp_max].valeur = avl->usine->v_traite;
         (*cmp_max)++;
-    }
-
-    récupérer_max(avl->fg, dict, cmp_max);
-}
-
-void récupérer_min(pAVL avl, Dictionnaire dict[MAX_CMP], int* cmp_min) { // récupère le min dans l'ABR par un parcourt infix
-    if (!avl || !dict || !cmp_min || *cmp_min >= MAX_CMP) {
-        return; 
-    }
+    } USINE 
 
     récupérer_min(avl->fg, dict, cmp_min);
 

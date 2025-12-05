@@ -6,7 +6,7 @@ source ./bash/fonction.sh
 #exemple de lancement ./launch.sh [arg1 : cmd] [arg2 : help]
 
 #on vérifit les dépendances avant le lancement
-verifDependance
+#verifDependance
 if [ "$1" = "-r" ] || [ "$1" = "--run" ];then
     if { [ "$2" = "--force" ] || [ "$3" = "--force" ]; } && [ "$?" -eq 1 ];then
         echo "Vous compilez avec une ou plusieurs librairies manquantes (mode --force)."

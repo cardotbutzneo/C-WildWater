@@ -106,30 +106,37 @@ afifchageInit(){
     echo "Go outside touching grass, lol player 🐒 🐒"
 }
 
- /* OUTPUT = "output"
- ERRF= "$OUTPUT/stderr.txt"
+#  OUTPUT = "output"
+# ERRF= "$OUTPUT/stderr.txt"
+#erreur(){
+#    echo "[ERREUR] : $message" >> "$ERRF"
+#}
 
-erreur(){
-    echo "[ERREUR] : $message" >> "$ERRF"
-} */
-
-/* filtrage() {
-
-    # Vérification du nombre d'arguments
+filtrage() {
     if (( $# != 1 )); then
-        echo "Usage: filtrage <numero_colonne>"
+        echo "Usage: filtrage <type>"
+        echo "Types : usine jonction stockage raccordement source"
         return 1
     fi
-    
-    if ! [[ $1 =~ ^[1-5]$ ]]; then
-        echo "Erreur : l'argument doit être un nombre entre 1 et 5"
-        return 1
-    fi
-    echo "Filtrage des lignes correspondant au pattern :"
-    grep -E "^-;[^-;]+;-;[^;]*;[^;]*" ./c-wildwater_v0.dat
-    echo "Colonne $1 ignorée"
-    cut -d ';' -f1-5 --complement -f"$1" ./c-wildwater_v0.dat
+    case "$1" in
+        usine)
+            grep -E "^-;[^-;]+;-;[^;]*;[^;]*" ./c-wildwater_v0.dat
+            ;;
+        jonction)
+            grep -E "^[^;]*;Junction #[A-Z0-9]+;Service #[A-Z0-9]+;-;" ./c-wildwater_v0.dat
+            ;;
+        stockage)
+            grep -E "^-;[^-;]*;[^-;]*;-;[^-;]*" ./c-wildwater_v0.dat
+            ;;
+        raccordement)
+            grep -E "^[^;]*;Service #[A-Z0-9]+;Cust #[A-Z0-9]+;-;[^;]*" ./c-wildwater_v0.dat
+            ;;
+        source)
+            grep -E "^-;[^;]*;[^;]*;[^;]*;[^;]*" ./c-wildwater_v0.dat
+            ;;
+        *)
+            echo "Erreur : type inconnu « $1 »"
+            return 1
+            ;;
+    esac
 }
-}
-
-*/
