@@ -21,7 +21,7 @@ void recuperersource(char* sauvegarde, char* ligne) {
     }
 }
 
-
+/*
 int main() {
     char sauvegarde[64];   // un vrai buffer
     char ligne[] = "-;Source #HC900000Q;Unit #NM000000T;2956;0.915";  
@@ -31,3 +31,4 @@ int main() {
 
     return 0;
 }
+*/

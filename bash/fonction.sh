@@ -135,6 +135,7 @@ filtrage() {
             ;;
         source)
             grep -E "^-;[^;]*;[^;]*;[^;]*;[^;]*" ./c-wildwater_v0.dat >> gnuplot/data/source.dat
+            ./main source
             ;;
         *)
             echo "Erreur : type inconnu « $1 »"
