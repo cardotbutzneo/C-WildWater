@@ -7,9 +7,15 @@
 
 // include librairie perso
 #include "arbres.h"
+#include "fonction.h"
+#include "histo.h"
+
+//constante
+#define MAX_CMP 5
 
 // structures
 
 // fonctions
+Token_liste* ouvrir_fichier(const char* nom_fichier);
 
 #endif

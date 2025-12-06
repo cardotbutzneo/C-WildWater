@@ -114,25 +114,27 @@ afifchageInit(){
 
 filtrage() {
     if (( $# != 1 )); then
+        echo "Erreur : manque d'argument" 
+        echo "Exemple d'utilisation : "
         echo "Usage: filtrage <type>"
         echo "Types : usine jonction stockage raccordement source"
         return 1
     fi
     case "$1" in
         usine)
-            grep -E "^-;[^-;]+;-;[^;]*;[^;]*" ./c-wildwater_v0.dat
+            grep -E "^-;[^-;]+;-;[^;]*;[^;]*" ./c-wildwater_v0.dat >> gnuplot/data/usine.dat
             ;;
         jonction)
-            grep -E "^[^;]*;Junction #[A-Z0-9]+;Service #[A-Z0-9]+;-;" ./c-wildwater_v0.dat
+            grep -E "^[^;]*;Junction #[A-Z0-9]+;Service #[A-Z0-9]+;-;" ./c-wildwater_v0.dat >> gnuplot/data/jonction.dat
             ;;
         stockage)
-            grep -E "^-;[^-;]*;[^-;]*;-;[^-;]*" ./c-wildwater_v0.dat
+            grep -E "^-;[^-;]*;[^-;]*;-;[^-;]*" ./c-wildwater_v0.dat >> gnuplot/data/stockage.dat
             ;;
         raccordement)
-            grep -E "^[^;]*;Service #[A-Z0-9]+;Cust #[A-Z0-9]+;-;[^;]*" ./c-wildwater_v0.dat
+            grep -E "^[^;]*;Service #[A-Z0-9]+;Cust #[A-Z0-9]+;-;[^;]*" ./c-wildwater_v0.dat >> gnuplot/data/raccordement.dat
             ;;
         source)
-            grep -E "^-;[^;]*;[^;]*;[^;]*;[^;]*" ./c-wildwater_v0.dat
+            grep -E "^-;[^;]*;[^;]*;[^;]*;[^;]*" ./c-wildwater_v0.dat >> gnuplot/data/source.dat
             ;;
         *)
             echo "Erreur : type inconnu « $1 »"
@@ -140,3 +142,5 @@ filtrage() {
             ;;
     esac
 }
+
+filtrage "$1"

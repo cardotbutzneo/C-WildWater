@@ -1,5 +1,6 @@
 #include "main.h"
 #include "arbres.h"
+#include <string.h>
 pAVL creerAVL(pUsine usine) {
   if (usine == NULL){
       return NULL;

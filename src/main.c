@@ -1,6 +1,13 @@
 #include "main.h"
-int main(void)
+int main(int argc, char* argsv[])
 {
-    printf("Hello world\n");
+    Token_liste* valeurs = NULL;
+    valeurs = ouvrir_fichier(argsv[1]);
+    Token_liste *temp = valeurs;
+    while (temp){
+        printf("type : %s\n",temp->token);
+        temp = temp->suivant;
+    }
+    
     return 0;
 }
