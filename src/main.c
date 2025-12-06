@@ -12,5 +12,17 @@ int main(int argc, char* argsv[])
     }
     libérer_token(valeurs);
     printf("Mémoire libérée\n");
+     pAVL arbre = NULL;
+    int h = 0;
+    temp = valeurs;
+    while (temp) {
+        pUsine u = malloc(sizeof(Usine));
+        if (!u) { perror("malloc"); exit(EXIT_FAILURE); }
+         u->capacite = 0;
+        u->v_capte  = 0;
+        u->v_traite = 0;
+        arbre = insertionAVL(arbre, u, &h);
+        temp = temp->suivant;
+    }
     return 0;
 }

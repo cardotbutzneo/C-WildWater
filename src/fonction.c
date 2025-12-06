@@ -33,7 +33,7 @@ void récupérer_min(pAVL avl, Dictionnaire dict[MAX_CMP], int* cmp_min) { // r�
     if (!avl || !dict || !cmp_min || *cmp_min >= MAX_CMP) {
         return; 
     }
-    récupérer_min(avl,dict,cmp_min);
+    récupérer_min(avl->fg,dict,cmp_min);
 
     if (*cmp_min < MAX_CMP) {
         dict[*cmp_min].cle = avl->usine->id;
