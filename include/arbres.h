@@ -7,11 +7,12 @@ typedef struct{
     unsigned long valeur;
 }Dictionnaire;
 
+
 typedef struct{
     char* id;
-    double capacite;
-    double v_traite;
-    double v_capte;
+    unsigned long capacite;
+    unsigned long v_traite;
+    unsigned long v_capte;
 } Usine;
 
 typedef Usine* pUsine;
@@ -32,12 +33,6 @@ typedef struct AVL {
 } AVL;
 
 typedef struct AVL* pAVL;   
-/*
-typedef struct {
-    char* id;
-    char* 
-}
-*/
 
 
 #endif
