@@ -2,10 +2,16 @@
 #include "arbres.h"
 #include "histo.h"
 #include <string.h>
+#include <time.h>
 
-void printErrreur(char *format){
-    if (!format) return;
-    fprintf(stderr,format);
+void printErreur(const char *msg) {
+    if (!msg) return;
+    time_t t = time(NULL);
+    struct tm *date = localtime(&t);
+    char champ_date[32];
+    strftime(champ_date, sizeof(champ_date), "%Y-%m-%d %H:%M:%S", date);
+
+    fprintf(stderr, "[%s] Erreur : %s\n", champ_date, msg);
 }
 
 void récupérer_max(pAVL avl, Dictionnaire dict[MAX_CMP], int* cmp_max) { // récupère le max dans l'ABR par un parcourt infix inverse
