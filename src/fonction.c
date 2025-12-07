@@ -61,7 +61,7 @@ Token_liste* ouvrir_fichier(const char* nom_fichier){
 
     FILE *f = fopen(chemin, "r");
     if (!f) {
-        printErrreur("Erreur lors de l'ouverture du fichier\n");
+        printErreur("Erreur lors de l'ouverture du fichier\n");
         return NULL;
     }
 

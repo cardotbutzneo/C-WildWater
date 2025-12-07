@@ -34,5 +34,8 @@ typedef struct AVL {
 
 typedef struct AVL* pAVL;   
 
+//fonction
+
+pAVL insertionAVL(pAVL a, pUsine usine, int *h);
 
 #endif
