@@ -39,4 +39,5 @@ typedef struct AVL* pAVL;
 pAVL insertionAVL(pAVL a, pUsine usine, int *h);
 void libererAVL(pAVL a);
 int recherche_i(pAVL a, char* id);
+void afficherAVL(pAVL avl);
 #endif

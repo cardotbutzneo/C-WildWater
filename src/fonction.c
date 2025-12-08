@@ -90,7 +90,7 @@ Token_liste* ouvrir_fichier(const char* nom_fichier){
 }
 */
 
-void lireUsineFichier(const char* chemin_fichier, pAVL *avl){ // lit une ligne et l'ajoute dans l'avl
+void lireFichier(const char* chemin_fichier, pAVL *avl){ // lit une ligne et l'ajoute dans l'avl
     if (!chemin_fichier) {
         printErreur("Impossible de connaitre l'emplacement du fichier\n");
         return;

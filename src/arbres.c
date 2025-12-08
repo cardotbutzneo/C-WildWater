@@ -185,11 +185,9 @@ pAVL insertionAVL(pAVL a, pUsine usine, int *h){
     return a;
 }
 
-
-
-
-
-
-
-
-
+void afficherAVL(pAVL avl){
+    if (!avl) return;
+    afficherAVL(avl->fg);
+    printf("Id : %s\n",avl->usine->id);
+    afficherAVL(avl->fd);
+}
