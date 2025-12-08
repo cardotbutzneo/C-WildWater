@@ -127,6 +127,22 @@ int hauteur(pAVL a){
    }
 }
 
+int recherche_i(pAVL a, char* id){
+    if(a == NULL){
+        return 0;
+    }
+    int comparateur=strcmp(id, a->usine->id);
+    if(comparateur < 0){
+        return recherche_i(a->fg, id);
+    } 
+    if(comparateur == 0){
+        return 1;
+    }
+    else {
+        return recherche_i(a->fd, id);
+    }
+}
+
 pAVL recherche(pAVL a, char* id){
     if(a == NULL){
         return NULL;

@@ -3,24 +3,65 @@
 #include "../include/fonction.h"
 #include <string.h>
 
+char* extraireID(const char* token) {
+    if (!token) return NULL;
 
+    // Cherche le caractère '#'
+    char* pos = strchr(token, '#');
+    if (!pos) {
+        return strdup(token);  // pas de #
+    }
 
-void recuperersource(char* sauvegarde, char* ligne) {
+    return strdup(pos + 1); // # dans le token
+}
 
-    char* token = strtok(ligne, ";");
+void recuperersource(char* sauvegarde[5], char* ligne) {
+    char* temp = strdup(ligne);   // duplique la ligne pour que strtok puisse la modifier
+    char* token = strtok(temp, ";");
     int i = 0;
 
-    while (token) {
-        if (i == 1) {       // deuxième champ
-            strcpy(sauvegarde, token);
-            return;
-        }
-        printf("token : %s\n", token);
+    while (token && i < 5) {
+        sauvegarde[i] = strdup(token);   // alloue et copie la chaîne
         token = strtok(NULL, ";");
         i++;
     }
+
+    free(temp);
+}
+/* 
+void verifMemoire(Token_liste* colonne){
+    if (!colonne) return;
+    Token_liste* temp = colonne;
+    while (temp){
+        if (!temp) libérer_token(colonne);
+        exit(10);
+    }
+}
+void _(Token_liste* colonne){
+    verifMemoire(colonne);
+    char* col1 = colonne->token;
+    char* col2 = colonne->suivant->token;
+    char* col3 = colonne->suivant->suivant->token;
+    char* col4 = colonne->suivant->suivant->suivant->token;
+    char* col5 = colonne->suivant->suivant->suivant->suivant->token;
 }
 
+pUsine creerUsine(Token_liste* liste){
+    if (!liste) return NULL;
+    pUsine usine = malloc(sizeof(Usine));
+    if (!usine) exit(10);
+    usine->capacite = liste->suivant->suivant->suivant->suivant->token;
+    usine->id = liste->suivant->token;
+    usine->v_capte = 0;
+    usine->v_traite = 0;
+    return usine;
+}
+*/
+pAVL ajouterAVLUsine(pAVL avl,pUsine usine){
+    int h=0;
+    avl = insertionAVL(avl,usine,&h);
+    return avl;
+}
 /*
 int main() {
     char sauvegarde[64];   // un vrai buffer

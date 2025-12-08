@@ -123,23 +123,23 @@ filtrage() {
     case "$1" in
         usine)
             grep -E "^-;[^-;]+;-;[^;]*;[^;]*" ./c-wildwater_v0.dat >> gnuplot/data/usine.dat
-            ./main usine
+            #./main usine
             ;;
         jonction)
             grep -E "^[^;]*;Junction #[A-Z0-9]+;Service #[A-Z0-9]+;-;" ./c-wildwater_v0.dat >> gnuplot/data/jonction.dat
-            ./main jonction
+            #./main jonction
             ;;
         stockage)
             grep -E "^-;[^-;]*;[^-;]*;-;[^-;]*" ./c-wildwater_v0.dat >> gnuplot/data/stockage.dat
-            ./main stockage
+            #./main stockage
             ;;
         raccordement)
             grep -E "^[^;]*;Service #[A-Z0-9]+;Cust #[A-Z0-9]+;-;[^;]*" ./c-wildwater_v0.dat >> gnuplot/data/raccordement.dat
-            ./main raccordement
+            #./main raccordement
             ;;
         source)
             grep -E "^-;[^;]*;[^;]*;[^;]*;[^;]*" ./c-wildwater_v0.dat >> gnuplot/data/source.dat
-            ./main source
+            #./main source
             ;;
         *)
             echo "Erreur : type inconnu « $1 »"
@@ -157,3 +157,5 @@ trie(){
         fi
     done
 }
+
+trie "$1"

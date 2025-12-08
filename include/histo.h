@@ -8,6 +8,8 @@ typedef struct _token_liste{
     struct _token_liste* suivant;
 }Token_liste;
 
-void recuperersource(char* sauvegarde, char* ligne);
+void recuperersource(char* sauvegarde[5], char* ligne);
+pAVL ajouterAVLUsine(pAVL avl,pUsine usine);
+char* extraireID(const char* token);
 
 #endif

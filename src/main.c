@@ -2,27 +2,19 @@
 int main(int argc, char* argsv[])
 {
     if (argc !=2) exit(0);
-    printErreur("hello");
-    Token_liste* valeurs = NULL;
-    valeurs = ouvrir_fichier(argsv[1]);
-    Token_liste *temp = valeurs;
-    while (temp){
-        printf("type : %s\n",temp->token);
-        temp = temp->suivant;
+    if (!argsv) return 1;
+    pAVL avl = NULL;
+    lireUsineFichier("usine",&avl);
+    printf("lecture réussie\n");
+    switch (recherche_i(avl,"NM000000T")){ // exemple de recherche de noeud
+        case 0:
+            printf("Id trouvé\n");
+            break;
+        default:
+            printf("Id non trouvé\n");
+            break;
     }
-    libérer_token(valeurs);
+    libererAVL(avl);
     printf("Mémoire libérée\n");
-     pAVL arbre = NULL;
-    int h = 0;
-    temp = valeurs;
-    while (temp) {
-        pUsine u = malloc(sizeof(Usine));
-        if (!u) { perror("malloc"); exit(EXIT_FAILURE); }
-         u->capacite = 0;
-        u->v_capte  = 0;
-        u->v_traite = 0;
-        arbre = insertionAVL(arbre, u, &h);
-        temp = temp->suivant;
-    }
     return 0;
 }

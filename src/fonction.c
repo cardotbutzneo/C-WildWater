@@ -54,7 +54,7 @@ Token_liste* creerToken(const char* valeur){
     return nouveau;
 }
 
-
+/*
 Token_liste* ouvrir_fichier(const char* nom_fichier){
     char chemin[256];
     snprintf(chemin, sizeof(chemin), "gnuplot/data/%s.dat", nom_fichier);
@@ -88,7 +88,57 @@ Token_liste* ouvrir_fichier(const char* nom_fichier){
     fclose(f);
     return liste;
 }
+*/
 
+void lireUsineFichier(const char* chemin_fichier, pAVL *avl){ // lit une ligne et l'ajoute dans l'avl
+    if (!chemin_fichier) {
+        printErreur("Impossible de connaitre l'emplacement du fichier\n");
+        return;
+    }
+
+    char chemin[256];
+    snprintf(chemin, sizeof(chemin), "gnuplot/data/%s.dat", chemin_fichier);
+    FILE *f = fopen(chemin, "r");
+    if (!f) {
+        printErreur("Erreur : Impossible de lire le fichier .dat\n");
+        return;
+    }
+
+    char buffer[256];
+    while (fgets(buffer, sizeof(buffer), f)) {
+
+        pUsine usine = malloc(sizeof(Usine));
+        if (!usine) { fclose(f); return; }
+
+        char* token = strtok(buffer, ";");
+        int i = 0;
+
+        while (token) {
+            switch (i) {
+                case 1: {
+                    char* tmp = extraireID(token);
+                    //printf("ID : %s\n",tmp); // débeugage
+                    usine->id = strdup(tmp);
+                    free(tmp);
+                    break;
+                }
+                case 3:
+                    usine->v_traite = atoi(token);
+                    break;
+            }
+
+            token = strtok(NULL, ";");
+            i++;
+        }
+
+        *avl = ajouterAVLUsine(*avl, usine);
+    }
+
+    fclose(f);
+}
+   
+
+/*
 void libérer_token(Token_liste* liste){
     while (liste){
         Token_liste* f = liste;
@@ -96,3 +146,4 @@ void libérer_token(Token_liste* liste){
         free(f);
     }
 }
+*/
