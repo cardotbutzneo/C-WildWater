@@ -30,17 +30,19 @@ int main(int argc, char* argsv[])
     i=1;
     printf("Affichage après remplissage\n");
     afficherAVL(avl,&i);
-    int taille;
-    Dictionnaire *top = nUsinesOptimise(avl, 3, "v_traite", 1, &taille); // max=1 pour top 5
-
-    printf("Top %d usines par volume traité :\n", taille);
-    for (int i = 0; i < taille; i++) {
-        printf("%s : %.2ld\n", top[i].id, top[i].valeur);
-    }
+    int taille_m;
+    int taille_p;
+    Dictionnaire* n_meilleurs = nUsinesOptimise(avl, 2, "v_traite", 1, &taille_m); // max=1 pour top 5
+    Dictionnaire* n_pire = nUsinesOptimise(avl,2,"v_traite",0,&taille_p);
+    qsort(n_meilleurs,taille_m, sizeof(Dictionnaire),trieDict);
+    qsort(n_pire,taille_p,sizeof(Dictionnaire),trieDict);
     char chemin[64] = "";
-    ecrireUsine(top,taille,chemin);
-    free(top);
+    ecrireUsine(n_meilleurs,taille_m,chemin,1);
+    chemin[0] = '\0';
+    ecrireUsine(n_pire,taille_p,chemin,0);
 
+    free(n_meilleurs);
+    free(n_pire);
     libererAVL(avl);
     printf("Mémoire libérée\n");
     return 0;

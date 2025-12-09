@@ -9,9 +9,11 @@ set style fill solid 0.6 border -1
 set boxwidth 0.6
 
 set terminal pngcairo size 900,600 enhanced font "Verdana,10"
-set output "gnuplot/graphique/volume_usines.png"
+set output "gnuplot/graphique/volume_max_usines.png"
 
 # Important : catégories en abscisse
 set xtics rotate by -45
 
 plot "gnuplot/data/usine_max.dat" using 2:xtic(1) title "Volume"
+set output "gnuplot/graphique/volume_min_usines.png"
+plot "gnuplot/data/usine_min.dat" using 2:xtic(1) title "Volume"

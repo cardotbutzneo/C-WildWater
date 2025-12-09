@@ -78,6 +78,13 @@ Dictionnaire* nUsinesOptimise(pAVL avl, int n, char *critere, int max, int *tail
 }
 // end
 
+int trieDict(const void* a, const void* b){
+    const Dictionnaire* dict_a = a;
+    const Dictionnaire* dict_b = b;
+    if (dict_a->valeur < dict_b->valeur) return -1;
+    if (dict_a->valeur > dict_b->valeur) return 1;
+    return 0;
+}
 
 
 /*
@@ -268,14 +275,17 @@ void remplirAVL(pAVL avl) {
     fclose(f);
 }
 
-void ecrireUsine(Dictionnaire *dict, int taille, char destination[64]){
+void ecrireUsine(Dictionnaire *dict, int taille, char destination[64], int type){ // (1=max, 0=min)
     if (!dict || taille <= 0) return;
-
+    if (type > 1 || type < 0) return;
     // Fichier par défaut
-    if (destination[0] == '\0') {
+    if (destination[0] == '\0' && type == 1) {
         strcpy(destination, "gnuplot/data/usine_max.dat");
     }
-
+    else if (destination[0] == '\0' && type == 0){
+        strcpy(destination, "gnuplot/data/usine_min.dat");
+    }
+    printf("destination : %s\n",destination);
     FILE *f = fopen(destination, "w");
     if (!f) {
         printErreur("Erreur : Impossible d'ouvrir le fichier de destination\n");
