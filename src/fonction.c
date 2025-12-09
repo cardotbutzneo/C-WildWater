@@ -14,6 +14,67 @@ void printErreur(const char *msg) {
     fprintf(stderr, "[%s] Erreur : %s\n", champ_date, msg);
 }
 
+// made by chatgpt
+// Fonction utilitaire pour trouver l'index de la valeur extrême dans le tableau
+int indexExtreme(Dictionnaire *tab, int n, int max) {
+    int idx = 0;
+    for (int i = 1; i < n; i++) {
+        if ((max && tab[i].valeur < tab[idx].valeur) || (!max && tab[i].valeur > tab[idx].valeur))
+            idx = i;
+    }
+    return idx;
+}
+
+// Fonction de parcours AVL pour remplir le top n de manière optimisée
+void remplirTopN(pAVL avl, Dictionnaire *top, int n, int *count, char *critere, int max) {
+    if (!avl) return;
+
+    // Parcours gauche et droite pour couvrir tout l'AVL
+    remplirTopN(avl->fg, top, n, count, critere, max);
+
+    // Récupérer la valeur selon le critère
+    double val;
+    if (strcmp(critere, "capacite") == 0)
+        val = avl->usine->capacite;
+    else if (strcmp(critere, "v_capte") == 0)
+        val = avl->usine->v_capte;
+    else if (strcmp(critere, "v_traite") == 0)
+        val = avl->usine->v_traite;
+    else
+        val = 0;
+
+    if (*count < n) {
+        // Remplir le tableau jusqu'à n éléments
+        strcpy(top[*count].id, avl->usine->id);
+        top[*count].valeur = val;
+        (*count)++;
+    } else {
+        // Remplacer la valeur extrême si nécessaire
+        int idx = indexExtreme(top, n, max); // index de la plus petite (max=1) ou plus grande (max=0)
+        if ((max && val > top[idx].valeur) || (!max && val < top[idx].valeur)) {
+            strcpy(top[idx].id, avl->usine->id);
+            top[idx].valeur = val;
+        }
+    }
+
+    remplirTopN(avl->fd, top, n, count, critere, max);
+}
+
+// Fonction principale
+Dictionnaire* nUsinesOptimise(pAVL avl, int n, char *critere, int max, int *taille) {
+    if (!avl || n <= 0) return NULL;
+
+    Dictionnaire *top = malloc(sizeof(Dictionnaire) * n);
+    int count = 0;
+
+    remplirTopN(avl, top, n, &count, critere, max);
+
+    *taille = count;
+
+    return top;
+}
+// end
+/*
 void récupérer_max(pAVL avl, Dictionnaire dict[MAX_CMP], int* cmp_max) { // récupère le max dans l'ABR par un parcourt infix inverse
     if (!avl || !dict || !cmp_max || *cmp_max >= MAX_CMP) {
         return; 
@@ -54,7 +115,7 @@ Token_liste* creerToken(const char* valeur){
     return nouveau;
 }
 
-/*
+
 Token_liste* ouvrir_fichier(const char* nom_fichier){
     char chemin[256];
     snprintf(chemin, sizeof(chemin), "gnuplot/data/%s.dat", nom_fichier);
@@ -192,7 +253,7 @@ void remplirAVL(pAVL avl) {
         token = strtok(NULL, ";"); // % perte
         if (token) {
             trim(token);
-            usineptr->usine->v_traite = v_capte * (1.0 - atof(token));
+            usineptr->usine->v_traite = v_capte * (1.0 - (atof(token)/100));
         }
 
         free(id_token);
@@ -211,14 +272,3 @@ void trim(char* str) {
         str[--len] = '\0';
 }
 
-
-
-/*
-void libérer_token(Token_liste* liste){
-    while (liste){
-        Token_liste* f = liste;
-        liste = liste->suivant;
-        free(f);
-    }
-}
-*/

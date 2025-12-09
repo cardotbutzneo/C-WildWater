@@ -3,7 +3,7 @@
 #include "main.h"
 
 typedef struct{
-    char* cle;
+    char id[64];
     unsigned long valeur;
 }Dictionnaire;
 

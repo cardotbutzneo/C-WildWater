@@ -30,6 +30,15 @@ int main(int argc, char* argsv[])
     i=1;
     printf("Affichage après remplissage\n");
     afficherAVL(avl,&i);
+    int taille;
+    Dictionnaire *top5 = nUsinesOptimise(avl, 1, "v_traite", 1, &taille); // max=1 pour top 5
+
+    printf("Top %d usines par volume traité :\n", taille);
+    for (int i = 0; i < taille; i++) {
+        printf("%s : %.2ld\n", top5[i].id, top5[i].valeur);
+    }
+    free(top5);
+
     libererAVL(avl);
     printf("Mémoire libérée\n");
     return 0;
