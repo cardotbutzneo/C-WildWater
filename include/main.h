@@ -9,6 +9,7 @@
 #include "arbres.h"
 #include "fonction.h"
 #include "histo.h"
+#include "couleurs.h"
 
 //constante
 #define MAX_CMP 5

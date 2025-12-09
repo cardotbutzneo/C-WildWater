@@ -198,10 +198,10 @@ void afficherAVL(pAVL avl, int *cmp){
         printf(ROUGE"Noeud n°%d\033[0m\n"RESET, *cmp);
         (*cmp)++;
     }
-    printf("Id             : '%s'\n", avl->usine->id);
-    printf("Capacité       : %.3e m³\n",(double)avl->usine->capacite);
-    printf("Volume capté   : %.3e m³\n", (double)avl->usine->v_capte);
-    printf("Volume traité  : %.3e m³\n", (double)avl->usine->v_traite);
+    printf("Id                                 : '%s'\n", avl->usine->id);
+    printf("Capactité max de traitement        : %.3e m³\n",(double)avl->usine->capacite);
+    printf("Volume capté                       : %.3e m³\n", (double)avl->usine->v_capte);
+    printf("Volume traité                      : %.3e m³\n", (double)avl->usine->v_traite);
 
     afficherAVL(avl->fd, cmp);
 }

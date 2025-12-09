@@ -127,7 +127,7 @@ void lireFichier(const char* chemin_fichier, pAVL *avl) {
                     break;
                 }
                 case 3:
-                    usine->v_traite = atoi(token);
+                    usine->capacite = atoi(token);
                     break;
             }
             token = strtok(NULL, ";");
@@ -192,7 +192,7 @@ void remplirAVL(pAVL avl) {
         token = strtok(NULL, ";"); // % perte
         if (token) {
             trim(token);
-            usineptr->usine->capacite = v_capte * (1.0 - atof(token));
+            usineptr->usine->v_traite = v_capte * (1.0 - atof(token));
         }
 
         free(id_token);
