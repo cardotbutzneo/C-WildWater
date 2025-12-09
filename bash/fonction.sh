@@ -147,7 +147,6 @@ filtrage() {
             ;;
     esac
 }
-#grep ";Storage #" ./c-wildwater_v0.dat > gnuplot/data/stockage.dat
 trie(){
     liste_trie=("usine" "jonction" "stockage" "raccordement" "source")
     for trie in "${liste_trie[@]}";do
