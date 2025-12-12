@@ -17,14 +17,6 @@ typedef struct{
 
 typedef Usine* pUsine;
 
-typedef struct _troncons{
-    pUsine usine;
-    char* id_amont;
-    char *id_aval;
-    double volume;
-    float fuite;
-}Troncons;
-
 typedef struct AVL {
     pUsine usine;
     int eq;
