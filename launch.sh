@@ -77,21 +77,26 @@ elif [ "$1" = "--arbo" ] && [ "$#" -eq 1 ];then
     arboraissance
     exit 0
 elif [ "$1" = "histo" ] && [ $verif_flag -eq 0 ];then #non acces aux graphiques si gnuplot n'est pas installé
-    creerFichierData "$2"
     if [ "$?" -ne 0 ];then
         exit 1
     fi
     if [ "$2" = "max" ];then
     #fonction
         echo "appel de la fonction pour max"
-        gnuplot -c gnuplot/run.gp max
+        trie "$1" "$2"
+        gnuplot -c gnuplot/run.gp
+        echo "Fin de programme"
         exit 0
     elif [ "$2" = "src" ];then
         echo "appel de la fonction pour src"
+        trie "$1" "$2"
+        gnuplot -c gnuplot/run.gp
     #fonction
     exit 0
     elif [ "$2" = "real" ];then
         echo "appel de la fonction pour real"
+        trie "$1" "$2"
+        gnuplot -c gnuplot/run.gp
         #fonction
         exit 0
     fi

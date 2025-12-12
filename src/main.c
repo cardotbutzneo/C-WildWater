@@ -9,9 +9,9 @@ int main(int argc, char* argv[]) {
     }
 
     char* critere = argv[1];
-    if (strcmp(critere, "v_traite") != 0 &&
-        strcmp(critere, "v_capte") != 0 &&
-        strcmp(critere, "capacite") != 0 &&
+    if (strcmp(critere, "src") != 0 &&
+        strcmp(critere, "real") != 0 &&
+        strcmp(critere, "max") != 0 &&
         strcmp(critere, "all") != 0) {
         fprintf(stderr, "Critère invalide : %s\n", critere);
         return 1;
@@ -21,24 +21,24 @@ int main(int argc, char* argv[]) {
     // Lecture et remplissage de l'AVL
     pAVL avl = NULL;
     printf("Lecture en cours...\n");
-    lireFichier("usine", &avl);
+    lireFichier(&avl);
     if (!avl) {
         fprintf(stderr, "Erreur lors de la lecture du fichier.\n");
         return 1;
     }
     printf("Lecture réussie\n");
 
-    remplirAVL(avl);
+    remplirAVL(&avl);
     printf("Remplissage réussi\n");
 
     // --------------------------------------------------------
     // Détermination du critère de tri
 
-    if (strcmp(critere, "capacite") == 0) {
+    if (strcmp(critere, "max") == 0) {
         critere_trie_global = CAPACITE;
-    } else if (strcmp(critere, "v_capte") == 0) {
+    } else if (strcmp(critere, "src") == 0) {
         critere_trie_global = V_CAPTE;
-    } else if (strcmp(critere, "v_traite") == 0) {
+    } else if (strcmp(critere, "real") == 0) {
         critere_trie_global = V_TRAITE;
     } else { // "all"
         critere_trie_global = SOMME;

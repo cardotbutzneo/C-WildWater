@@ -148,11 +148,37 @@ filtrage() {
     esac
 }
 trie(){
-    liste_trie=("usine")
-    for trie in "${liste_trie[@]}";do
-        fichier="gnuplot/data/{$trie}.dat"
-        filtrage "$trie"
-    done
-}
+    if (($# != 2));then
+        echo "Erreur : manque d'argument" >> output/stderr
+        return 1
+    fi
+    case "$1" in
+        histo)
+            time {
+                {
+                    grep -E "^-;[^-;]+;-;" ./c-wildwater_v3.dat
+                    echo "sources"
+                    grep -E "^-;[^;]*;[^-;]*;[^-;]*;[^;]*" ./c-wildwater_v3.dat
+                } | ./main "$2" 2>> output/stderr
+            }
 
-trie "$1"
+            return 0
+            ;;
+        leak)        
+            liste_trie=("usine" "source" "stokage" "raccordement" "jonction")
+            for trie in "${liste_trie[@]}";do
+                time {
+                    {
+                        grep -E \
+                        -e "^-;[^-;]+;-;" \
+                        -e "^-;[^;]*;[^-;]*;[^-;]*;[^;]*" \
+                        -e "^-;[^-;]*;[^-;]*;-;[^-;]*" \
+                        -e "^[^;]*;Junction #[A-Z0-9]+;Service #[A-Z0-9]+;-;" \
+                        -e "^[^;]*;Service #[A-Z0-9]+;Cust #[A-Z0-9]+;-;[^;]*" \
+                        c-wildwater_v3.dat \
+                        | ./main "$2" 2>> output/stderr
+                    }
+                }
+            done
+    esac
+}
