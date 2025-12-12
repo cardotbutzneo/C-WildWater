@@ -122,7 +122,7 @@ filtrage() {
     fi
     case "$1" in
         usine)
-            grep -E "^-;[^-;]+;-;[^;]*;[^;]*" ./c-wildwater_v3.dat > gnuplot/data/usine.dat
+            grep -E "^-;[^-;]+;-;" ./c-wildwater_v3.dat > gnuplot/data/usine.dat
             #./main usine
             ;;
         jonction)
@@ -148,7 +148,7 @@ filtrage() {
     esac
 }
 trie(){
-    liste_trie=("usine" "source")
+    liste_trie=("usine")
     for trie in "${liste_trie[@]}";do
         fichier="gnuplot/data/{$trie}.dat"
         filtrage "$trie"

@@ -3,12 +3,6 @@
 #include "main.h"
 
 typedef struct{
-    char id[64];
-    unsigned long valeur;
-}Dictionnaire;
-
-
-typedef struct{
     char* id;
     unsigned long capacite;
     unsigned long v_traite;
@@ -24,7 +18,14 @@ typedef struct AVL {
     struct AVL* fg;
 } AVL;
 
-typedef struct AVL* pAVL;   
+typedef struct AVL* pAVL;  
+
+typedef struct {
+    //char id[64];
+    //unsigned long valeur;
+    pUsine usine;
+}Dictionnaire;
+
 
 //fonction
 

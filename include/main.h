@@ -17,6 +17,8 @@
 
 // structures
 
+typedef enum {CAPACITE, V_CAPTE, V_TRAITE, SOMME} Critere;
+extern Critere critere_trie_global;  
 // fonctions
 
 #endif

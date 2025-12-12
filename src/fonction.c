@@ -3,6 +3,7 @@
 #include "histo.h"
 #include <string.h>
 #include <time.h>
+  
 
 void printErreur(const char *msg) {
     if (!msg) return;
@@ -16,75 +17,104 @@ void printErreur(const char *msg) {
 
 // made by chatgpt (j'ai compris !)
 // Fonction utilitaire pour trouver l'index de la valeur extrême dans le tableau
-int indexExtreme(Dictionnaire *tab, int n, int max) {
+int indexExtreme(pUsine* tab, int n, int max, int critere) {
     int idx = 0;
+
     for (int i = 1; i < n; i++) {
-        if ((max && tab[i].valeur < tab[idx].valeur) || (!max && tab[i].valeur > tab[idx].valeur))
+        unsigned long va, vb;
+
+        switch (critere) {
+            case 0: va = tab[i]->capacite;    vb = tab[idx]->capacite;    break;
+            case 1: va = tab[i]->v_capte;     vb = tab[idx]->v_capte;     break;
+            case 2: va = tab[i]->v_traite;    vb = tab[idx]->v_traite;    break;
+        }
+
+        if ((max && va < vb) || (!max && va > vb))
             idx = i;
     }
     return idx;
 }
 
-// Fonction de parcours AVL pour remplir le top n de manière optimisée
-void remplirTopN(pAVL avl, Dictionnaire *top, int n, int *cmp, char *critere, int max) {
+void remplirTopN(pAVL avl, pUsine* top, int n, int *cmp, char *critere, int max) {
     if (!avl) return;
 
-    // Parcours gauche et droite pour couvrir tout l'AVL
     remplirTopN(avl->fg, top, n, cmp, critere, max);
 
-    // Récupérer la valeur selon le critère
-    unsigned long val; //stocke la valeur par laquelle on doit comparer
-    if (strcmp(critere, "capacite") == 0){
-        val = avl->usine->capacite;
-    }
-    else if (strcmp(critere, "v_capte") == 0){
-        val = avl->usine->v_capte;
-    }
-    else if (strcmp(critere, "v_traite") == 0){
-        val = avl->usine->v_traite;
-    }
-    else val = 0;
+    int crit = (strcmp(critere, "capacite") == 0) ? 0 :
+               (strcmp(critere, "v_capte") == 0) ? 1 :
+               (strcmp(critere, "v_traite") == 0) ? 2 : -1;
 
+    unsigned long val =
+        (crit == 0) ? avl->usine->capacite :
+        (crit == 1) ? avl->usine->v_capte :
+                       avl->usine->v_traite;
+
+    // Si on n’a pas encore rempli
     if (*cmp < n) {
-        // Remplir le tableau jusqu'à n éléments 
-        strcpy(top[*cmp].id, avl->usine->id);
-        top[*cmp].valeur = val;
+        top[*cmp] = avl->usine;
         (*cmp)++;
-    } 
+    }
     else {
-        // Remplacer la valeur extrême si nécessaire
-        int idx = indexExtreme(top, n, max); // index de la plus petite (max=1) ou plus grande (max=0)
-        if ((max && val > top[idx].valeur) || (!max && val < top[idx].valeur)) {
-            strcpy(top[idx].id, avl->usine->id);
-            top[idx].valeur = val;
+        int idx = indexExtreme(top, n, max, crit);
+
+        unsigned long vref =
+            (crit == 0) ? top[idx]->capacite :
+            (crit == 1) ? top[idx]->v_capte :
+                           top[idx]->v_traite;
+
+        if ((max && val > vref) || (!max && val < vref)) {
+            top[idx] = avl->usine;
         }
     }
 
     remplirTopN(avl->fd, top, n, cmp, critere, max);
 }
 
-// Fonction principale
-Dictionnaire* nUsinesOptimise(pAVL avl, int n, char *critere, int max, int *taille) { // n : taille du tableau final
+pUsine* nUsinesOptimise(pAVL avl, int n, char *critere, int max, int *taille) {
     if (!avl || n <= 0) return NULL;
 
-    Dictionnaire *top = malloc(sizeof(Dictionnaire) * n);
+    pUsine *top = malloc(sizeof(pUsine) * n);
     int count = 0;
 
     remplirTopN(avl, top, n, &count, critere, max);
-
     *taille = count;
 
     return top;
 }
-// end
 
-int trieDict(const void* a, const void* b){
-    const Dictionnaire* dict_a = a;
-    const Dictionnaire* dict_b = b;
-    if (dict_a->valeur < dict_b->valeur) return -1;
-    if (dict_a->valeur > dict_b->valeur) return 1;
-    return 0;
+int trieDict(const void* a, const void* b) {
+
+    const Usine* ua = *(const Usine**)a;
+    const Usine* ub = *(const Usine**)b;
+
+    unsigned long sa = 0;
+    unsigned long sb = 0;
+
+    switch (critere_trie_global) {
+        case CAPACITE:
+            sa = ua->capacite;
+            sb = ub->capacite;
+            break;
+        case V_CAPTE:
+            sa = ua->v_capte;
+            sb = ub->v_capte;
+            break;
+        case V_TRAITE:
+            sa = ua->v_traite;
+            sb = ub->v_traite;
+            break;
+        case SOMME:
+            sa = ua->capacite + ua->v_capte + ua->v_traite;
+            sb = ub->capacite + ub->v_capte + ub->v_traite;
+            break;
+    }
+
+    return (sa > sb) - (sa < sb);
+
 }
+
+
+
 
 
 /*
@@ -193,11 +223,11 @@ void lireFichier(const char* chemin_fichier, pAVL *avl) {
             trim(token); // sécuriser chaque token
             switch (i) {
                 case 1: {
-                    char* tmp = extraireID(token);
-                    if (!tmp) break;
-                    trim(tmp);
-                    usine->id = strdup(tmp);
-                    free(tmp);
+                    //char* tmp = extraireID(token);
+                    //if (!tmp) break;
+                    trim(token);
+                    usine->id = strdup(token);
+                    //free(tmp);
                     break;
                 }
                 case 3:
@@ -242,16 +272,17 @@ void remplirAVL(pAVL avl) {
         token = strtok(NULL, ";"); // 3e token : ID de l'usine
         if (!token) continue;
         trim(token);
-
+        /*
         char* id_token = extraireID(token);
         if (!id_token) continue;
         trim(id_token);
+        */
 
-        pAVL usineptr = recherche(avl, id_token);
+        pAVL usineptr = recherche(avl, token);
         //printf("ID de l'usine lu : %s\n",id_token);
         if (!usineptr) {
             //printf("Erreur de mémoire sur %s\n",id_token);
-            free(id_token);
+            //free(id_token);
             continue; // passer à la ligne suivante
         }
 
@@ -269,13 +300,13 @@ void remplirAVL(pAVL avl) {
             usineptr->usine->v_traite = v_capte * (1.0 - (atof(token)/100));
         }
 
-        free(id_token);
+        //free(id_token);
     }
 
     fclose(f);
 }
 
-void ecrireUsine(Dictionnaire *dict, int taille, char destination[64], int type){ // (1=max, 0=min)
+void ecrireUsine(pUsine *dict, int taille, char destination[64], int type){ // (1=max, 0=min)
     if (!dict || taille <= 0) return;
     if (type > 1 || type < 0) return;
     // Fichier par défaut
@@ -292,10 +323,12 @@ void ecrireUsine(Dictionnaire *dict, int taille, char destination[64], int type)
         return;
     }
 
-    for (int i = 0; i < taille; i++) {
-        fprintf(f, "%s;%lu\n", dict[i].id, dict[i].valeur);
+    for (int i = 0; i < taille; i++) { // méthode d'écriture : id;capacite;v_capte;v_traite
+        if (dict[i]) if (dict[i]->capacite > 0 && dict[i]->v_capte > 0 && dict[i]->v_traite > 0){
+            unsigned long capa = dict[i]->capacite;
+            fprintf(f, "%s;%lu;%lu;%lu\n", dict[i]->id, capa,capa - dict[i]->v_capte,capa - dict[i]->v_traite);
+        }
     }
-
     fclose(f);
 }
 
@@ -307,7 +340,7 @@ void trim(char* str) {
     while(len > 0 && (str[len-1]=='\n' || str[len-1]==' ' || str[len-1]=='\r'))
         str[--len] = '\0';
 }
-
+/*
 void afficherDict(Dictionnaire* dict, int taille){
     for (int i=0;i<taille;i++){
         printf("cle : %s, valeur : %lu\n",dict[i].id,dict[i].valeur);
@@ -340,3 +373,4 @@ void jolieAffichage(Dictionnaire* dict, int type, int taille, char* critere) {
         printf("]  "JAUNE"(%.1f%%)\n\n"RESET, ratio * 100);
     }
 }
+*/

@@ -1,70 +1,81 @@
 #include "main.h"
-int main(int argc, char* argsv[])
-{
-    if (argc != 2){
+
+Critere critere_trie_global = SOMME;  
+
+int main(int argc, char* argv[]) {
+    if (argc != 2) {
         printf("Usage : ./main <critere de trie>\n");
         return 1;
     }
-    char* critere = argsv[1];
-      if (strcmp(critere, "v_traite") != 0 &&
+
+    char* critere = argv[1];
+    if (strcmp(critere, "v_traite") != 0 &&
         strcmp(critere, "v_capte") != 0 &&
-        strcmp(critere, "capacite") != 0) {
+        strcmp(critere, "capacite") != 0 &&
+        strcmp(critere, "all") != 0) {
         fprintf(stderr, "Critère invalide : %s\n", critere);
         return 1;
     }
+
+    // --------------------------------------------------------
+    // Lecture et remplissage de l'AVL
     pAVL avl = NULL;
     printf("Lecture en cours...\n");
-    lireFichier("usine",&avl); // lit tout le fichier des sources et l'ajoute à l'avl
-    if (avl) printf("lecture réussie\n");
-    //printf("Affichage avant remplissage\n");
-    //afficherAVL(avl,NULL);
-    //printf("lecture ptr avl : '%s' \n",avl->usine->id);
-    //printf("id : %s\n",avl->usine->id);
+    lireFichier("usine", &avl);
+    if (!avl) {
+        fprintf(stderr, "Erreur lors de la lecture du fichier.\n");
+        return 1;
+    }
+    printf("Lecture réussie\n");
+
     remplirAVL(avl);
-    /*
-    int n = recherche_i(avl,"CE100000E");
-    printf("====================\n");
-    if (n == 1) printf("Id trouvé\n");
-    else printf("Id non trouvé\n");
-    printf("====================\n");
-    pAVL s = recherche(avl,"CE100000E");
-    if (s){
-        printf("Id trouvé\n");
+    printf("Remplissage réussi\n");
+
+    // --------------------------------------------------------
+    // Détermination du critère de tri
+
+    if (strcmp(critere, "capacite") == 0) {
+        critere_trie_global = CAPACITE;
+    } else if (strcmp(critere, "v_capte") == 0) {
+        critere_trie_global = V_CAPTE;
+    } else if (strcmp(critere, "v_traite") == 0) {
+        critere_trie_global = V_TRAITE;
+    } else { // "all"
+        critere_trie_global = SOMME;
     }
-    else {
-        printf("Id non trouvé\n");
-    }
-
-
-    printf("====================\n");
-    printf("Affichage après remplissage\n");
-    afficherAVL(avl,NULL);
-    */
-
-    int taille_m;
-    int taille_p;
+    // --------------------------------------------------------
+    // Récupération des meilleures et pires usines
+    int taille_m = 0, taille_p = 0;
     int n_max = 10;
     int n_min = 50;
-    char* critere_trie = argsv[1];
 
-    Dictionnaire* n_meilleurs = nUsinesOptimise(avl, n_max, critere_trie, 1, &taille_m); // max=1 pour top 5
-    Dictionnaire* n_pire = nUsinesOptimise(avl,n_min,critere_trie,0,&taille_p);
+    pUsine* n_meilleurs = nUsinesOptimise(avl, n_max, critere, 1, &taille_m);
+    pUsine* n_pire = nUsinesOptimise(avl, n_min, critere, 0, &taille_p);
 
-    qsort(n_meilleurs,taille_m, sizeof(Dictionnaire),trieDict);
-    qsort(n_pire,taille_p,sizeof(Dictionnaire),trieDict);
+    if (!n_meilleurs || !n_pire) {
+        fprintf(stderr, "Erreur lors de la récupération des usines optimisées.\n");
+        libererAVL(avl);
+        return 1;
+    }
 
-    jolieAffichage(n_meilleurs,1,taille_m,critere_trie);
-    jolieAffichage(n_pire,0,taille_p,critere_trie);
+    // --------------------------------------------------------
+    // Tri des tableaux
+    qsort(n_meilleurs, taille_m, sizeof(Usine*), trieDict);
+    qsort(n_pire, taille_p, sizeof(Usine*), trieDict);
 
+    // --------------------------------------------------------
+    // Écriture dans les fichiers
     char chemin[64] = "";
-    ecrireUsine(n_meilleurs,taille_m,chemin,1);
+    ecrireUsine(n_meilleurs, taille_m, chemin, 1);
     chemin[0] = '\0';
-    ecrireUsine(n_pire,taille_p,chemin,0);
+    ecrireUsine(n_pire, taille_p, chemin, 0);
 
-
+    // --------------------------------------------------------
+    // Libération mémoire
     free(n_meilleurs);
     free(n_pire);
     libererAVL(avl);
     printf("Mémoire libérée\n");
+
     return 0;
 }
