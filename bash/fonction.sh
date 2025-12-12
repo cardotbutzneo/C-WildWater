@@ -154,5 +154,5 @@ trie(){
         filtrage "$trie"
     done
 }
-
+#grep -v "^-;[^;]*;[^-;]*;[^-;]*;[^;]*" ./c-wildwater_v0.dat | cut -d ';' -f 2,3,5 > fuites.dat (tout sauf les sources)
 trie "$1"
