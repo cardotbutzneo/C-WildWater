@@ -1,32 +1,30 @@
-/*
-typedef enum{
-    USINES=1,
-    STOCKAGES,
-    JONCTIONS,
-    RACCORDEMENTS,
-    USAGERS
-} Type;
+#define FUITES_H
 
-typedef struct Enfant{
-    struct Noeud *noeud;
-    struct Enfant *suivant;
+#include "main.h"
+ /*
+// Arbre K-aire
+typedef struct Enfant {
+    struct Troncon* noeud;
+    struct Enfant* suivant
 } Enfant;
 
-typedef struct  troncons{
-    char *id_amont;
-    Type type;
+typedef struct Troncon {
+    char *id;
     double volume;
     double fuite;
-    Enfant *enfants;
     int nb_enfants;
-} Troncons;
+    Enfant *enfants;
+} Troncon;
 
-typedef struct avlt{
+// Glossaire
+typedef struct Glossaire {
     char *id;
-    struct avlt* fg; 
-    struct avlt* fd;
+    Troncon* adresse;
     int eq;
+    struct Glossaire* fd;
+    struct Glossaire* fg;
 } Glossaire;
-*/
 
+typedef struct Glossaire* pGlossaire;
+*/
 
