@@ -1,6 +1,6 @@
 #include "main.h"
 
-Critere critere_trie_global = SOMME;  
+Critere critere_trie_global = MAX;  
 
 int main(int argc, char* argv[]) {
     if (argc != 2) {
@@ -34,14 +34,13 @@ int main(int argc, char* argv[]) {
     // --------------------------------------------------------
     // Détermination du critère de tri
 
-    if (strcmp(critere, "max") == 0) {
-        critere_trie_global = CAPACITE;
+    if (strcmp(critere, "max") == 0 || strcmp(critere,"all") == 0) {
+        critere_trie_global = MAX;
+        critere = "max";
     } else if (strcmp(critere, "src") == 0) {
-        critere_trie_global = V_CAPTE;
+        critere_trie_global = SRC;
     } else if (strcmp(critere, "real") == 0) {
-        critere_trie_global = V_TRAITE;
-    } else { // "all"
-        critere_trie_global = SOMME;
+        critere_trie_global = REAL;
     }
     // --------------------------------------------------------
     // Récupération des meilleures et pires usines
@@ -60,8 +59,8 @@ int main(int argc, char* argv[]) {
 
     // --------------------------------------------------------
     // Tri des tableaux
-    qsort(n_meilleurs, taille_m, sizeof(Usine*), trieDict);
-    qsort(n_pire, taille_p, sizeof(Usine*), trieDict);
+    //qsort(n_meilleurs, taille_m, sizeof(Usine*), trieDict);
+    //qsort(n_pire, taille_p, sizeof(Usine*), trieDict);
 
     // --------------------------------------------------------
     // Écriture dans les fichiers

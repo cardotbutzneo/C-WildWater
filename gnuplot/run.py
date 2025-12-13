@@ -1,72 +1,111 @@
-import matplotlib.pyplot as plt
+import sys
 import csv
+import matplotlib.pyplot as plt
+
+DATA_DIR = "gnuplot/data/"
 
 # -----------------------------------------------------------
-# Lecture d'un fichier .dat ou .csv
-# Chaque ligne : ID;Capacité;Volume capté;Volume traité
+# Lecture fichier .dat
 # -----------------------------------------------------------
 def lire_dat(fichier):
-    ids = []
-    capacites = []
-    captes = []
-    traites = []
-
+    data = []
     with open(fichier, "r", encoding="utf-8") as f:
         reader = csv.reader(f, delimiter=';')
         for row in reader:
             if len(row) < 4:
                 continue
-            ids.append(row[0])
-            capacites.append(float(row[1]))
-            captes.append(float(row[2]))
-            traites.append(float(row[3]))
-
-    return ids, capacites, captes, traites
+            data.append({
+                "id": row[0],
+                "max": float(row[1]),
+                "src": float(row[2]),
+                "real": float(row[3])
+            })
+    return data
 
 # -----------------------------------------------------------
-# Fonction pour tracer un graphique en barres empilées
+# Tri selon critère
 # -----------------------------------------------------------
-def tracer_graphique(fichier, sortie, titre):
-    ids, capacites, captes, traites = lire_dat(fichier)
+def cle_tri(usine, arg):
+    if arg == "max":
+        return usine["max"]
+    if arg == "src":
+        return usine["src"]
+    if arg == "real":
+        return usine["real"]
+    if arg == "all":
+        return usine["max"]
 
-    x_pos = range(len(ids))
+# -----------------------------------------------------------
+# Création graphique
+# -----------------------------------------------------------
+def tracer(data, arg, fichier_sortie, titre, reverse):
+
+    data.sort(key=lambda u: cle_tri(u, arg), reverse=reverse)
+
+    ids = [u["id"] for u in data]
+    x = range(len(ids))
 
     plt.figure(figsize=(12, 6))
+    # Couleurs à fort contraste (imposées par la consigne)
+    col_real_all = "#DFDFFF"   # bleu
+    col_perte = "#FFA0A0"  # rouge
+    col_reste = "#D2FFD2"  # vert
+    col_max = "#1f77b4"   # bleu fort
+    col_src = "#2ca02c"   # vert fort
+    col_real = "#d62728"  # rouge fort
 
-    # Couleurs pour les barres
-    couleur_capacite = "#DFFFDF"  # Bleu pastel
-    couleur_capte = "FFA0A0"   # Vert pastel
-    couleur_traite = "DFDFFF"  # Rouge pastel
+    if arg == "all":
+        real_vals = [u["real"] for u in data]
+        perte_vals = [u["src"] - u["real"] for u in data]
+        reste_vals = [u["max"] - u["src"] for u in data]
 
-    # Tracer les barres empilées
-    plt.bar(x_pos, capacites, color=couleur_capacite, label="Capacité")
-    plt.bar(x_pos, captes, bottom=capacites, color=couleur_capte, label="Volume capté")
-    plt.bar(x_pos, traites, bottom=[c + v for c, v in zip(capacites, captes)], color=couleur_traite, label="Volume traité")
 
-    # Personnalisation du graphique
-    plt.xticks(x_pos, ids, rotation=-45, ha='left')
+        plt.bar(x, real_vals, color=col_real_all)
+        plt.bar(x, perte_vals, bottom=real_vals, color=col_perte)
+        plt.bar(x,reste_vals,bottom=[r + p for r, p in zip(real_vals, perte_vals)],color=col_reste)
+    else:
+        valeurs = [cle_tri(u, arg) for u in data]
+        couleur = col_max if arg == "max" else col_src if arg == "src" else col_real
+        plt.bar(x, valeurs, color=couleur)
+
+    plt.xticks(x, ids, rotation=-45, ha="left")
     plt.ylabel("Volume (M.m³)")
     plt.title(titre)
-    plt.legend(loc="upper right")
-    plt.grid(axis='y', linestyle='--', alpha=0.5)
+    plt.grid(axis="y", linestyle="--", alpha=0.6)
     plt.tight_layout()
-
-    # Sauvegarder le graphique
-    plt.savefig(sortie)
+    plt.savefig(fichier_sortie)
     plt.close()
-    print(f"Graphique enregistré dans {sortie}")
 
 # -----------------------------------------------------------
-# Exemple d'utilisation
+# MAIN
 # -----------------------------------------------------------
 if __name__ == "__main__":
-    tracer_graphique(
-        fichier="gnuplot/data/usine_max.dat",
-        sortie="graphique_top_10.png",
-        titre="Plant data (10 greatest)"
+
+    if len(sys.argv) != 2:
+        print("Usage : python graphique.py [max|src|real|all]")
+        sys.exit(1)
+
+    arg = sys.argv[1]
+    if arg not in ("max", "src", "real", "all"):
+        print("Argument invalide")
+        sys.exit(1)
+
+    # 10 meilleurs
+    data_max = lire_dat(DATA_DIR + "usine_max.dat")
+    tracer(
+        data_max,
+        arg,
+        f"gnuplot/graphique/graphique_10_meilleurs_{arg}.png",
+        "10 meilleures usines",
+        reverse=False
     )
-    tracer_graphique(
-        fichier="gnuplot/data/usine_min.dat",
-        sortie="graphique_least_50.png",
-        titre="Plant data (10 worst)"
+
+    # 50 pires
+    data_min = lire_dat(DATA_DIR + "usine_min.dat")
+    tracer(
+        data_min,
+        arg,
+        f"gnuplot/graphique/graphique_50_pires_{arg}.png",
+        "50 pires usines",
+        reverse=False
     )

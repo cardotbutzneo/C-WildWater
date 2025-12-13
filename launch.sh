@@ -82,7 +82,7 @@ elif [ "$1" = "histo" ] && [ $verif_flag -eq 0 ];then #non acces aux graphiques 
     if [ "$2" = "max" ] || [ "$2" = "src" ] || [ "$2" = "real" ] || [ "$2" = "all" ];then
         echo "appel de la fonction"
         trie "$1" "$2"
-        python3 gnuplot/run.py
+        python3 gnuplot/run.py "$2"
         exit 0
     else
         echo "Commande non reconnu"

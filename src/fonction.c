@@ -91,21 +91,17 @@ int trieDict(const void* a, const void* b) {
     unsigned long sb = 0;
 
     switch (critere_trie_global) {
-        case CAPACITE:
+        case MAX:
             sa = ua->capacite;
             sb = ub->capacite;
             break;
-        case V_CAPTE:
+        case SRC:
             sa = ua->v_capte;
             sb = ub->v_capte;
             break;
-        case V_TRAITE:
+        case REAL:
             sa = ua->v_traite;
             sb = ub->v_traite;
-            break;
-        case SOMME:
-            sa = ua->capacite + ua->v_capte + ua->v_traite;
-            sb = ub->capacite + ub->v_capte + ub->v_traite;
             break;
     }
 
@@ -212,7 +208,7 @@ void remplirAVL(pAVL *avl) {
         token = strtok(NULL, ";");
         if (token) {
             trim(token);
-            res->usine->v_capte = strtoul(token, NULL, 10);
+            res->usine->v_capte += strtoul(token, NULL, 10);
         }
 
         // ---- % de perte ----
@@ -220,7 +216,7 @@ void remplirAVL(pAVL *avl) {
         if (token) {
             trim(token);
             float perte = atof(token);
-            res->usine->v_traite = res->usine->v_capte * (1.0 - perte / 100.0f);
+            res->usine->v_traite = res->usine->v_capte * (1.0 - perte / 100.0);
         }
     }
 }
@@ -245,12 +241,11 @@ void ecrireUsine(pUsine *dict, int taille, char destination[64], int type){ // (
 
     for (int i = 0; i < taille; i++) { // méthode d'écriture : id;capacite;v_capte;v_traite
         if (dict[i]) if (dict[i]->capacite > 0 && dict[i]->v_capte > 0 && dict[i]->v_traite > 0){
-            float capa = dict[i]->capacite;
             fprintf(f, "%s;%.3f;%.3f;%.3f\n",
             dict[i]->id,
-            capa / 1000.0,
-            (dict[i]->v_capte) / 1000.0,
-            (dict[i]->v_traite) / 1000.0);
+            (dict[i]->capacite/1000.0),
+            (dict[i]->v_capte/1000.0),
+            (dict[i]->v_traite/1000.0));
         }
     }
     fclose(f);
