@@ -164,4 +164,17 @@ Troncon* creerTroncon(const char *id, double fuite){
     nouveau->enfants = NULL;
     return nouveau;
 }
+
+void ajouter_enfant(Troncon* parent, Troncon* enfant){
+    Enfant* nv = malloc(sizeof(Enfant));
+    if (nouveau_enfant == NULL){
+        printf("Erreur d'allocation de mémoire");
+        exit(1);
+    }
+    nv->noeud = enfant;
+    nv->suivant = parent->enfants;
+    parent->enfants = nv;
+    parent->nb_enfants ++;
+}
+
 */
