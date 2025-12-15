@@ -76,5 +76,8 @@ int main(int argc, char* argv[]) {
     libererAVL(avl);
     printf(ROUGE"Mémoire libérée\n"RESET);
 
+    // --------------------------------------------------------
+    // Gestion des fuites
+
     return 0;
 }

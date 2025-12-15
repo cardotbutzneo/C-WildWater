@@ -2,9 +2,9 @@
 #include "../include/fuites.h"
 #include <string.h>
 
-/*
-pGlossaire creerGlossaire(const char* id, Troncon* adresse){ {
-    if (adresse == NULL || id == NULL){ {
+
+pGlossaire creerGlossaire(const char* id, Troncon* adresse){ 
+    if (adresse == NULL || id == NULL){ 
         return NULL;
     }
     pGlossaire nouveau = malloc(sizeof(Glossaire));
@@ -20,7 +20,7 @@ pGlossaire creerGlossaire(const char* id, Troncon* adresse){ {
     return nouveau;
 }
 
-pGlossaire rotationGauche(pGlossaire a){
+pGlossaire Glossaire_rotationGauche(pGlossaire a){
     pGlossaire pivot = a->fd;
     int eq_a = a->eq, eq_p = pivot->eq;
     a->fd = pivot->fg;
@@ -43,7 +43,7 @@ pGlossaire rotationGauche(pGlossaire a){
     return pivot;
 }
 
-pGlossaire rotationDroite(pGlossaire a){
+pGlossaire Glossaire_rotationDroite(pGlossaire a){
  pGlossaire pivot = a->fg;
  int eq_a = a->eq, eq_p = pivot->eq;
  a->fg = pivot->fd;
@@ -65,28 +65,28 @@ pGlossaire rotationDroite(pGlossaire a){
  }
  return pivot;
 }
- pGlossaire doubleRotationGauche(pGlossaire a){
-   a->fd = rotationDroite(a->fd);
-   return rotationGauche(a);
+ pGlossaire Glossaire_doubleRotationGauche(pGlossaire a){
+   a->fd = Glossaire_rotationDroite(a->fd);
+   return Glossaire_rotationGauche(a);
  }
 
-pGlossaire doubleRotationDroite(pGlossaire a){
-   a->fg = rotationGauche(a->fg);
-   return rotationDroite(a);
+pGlossaire Glossaire_doubleRotationDroite(pGlossaire a){
+   a->fg = Glossaire_rotationGauche(a->fg);
+   return Glossaire_rotationDroite(a);
  }
 
 pGlossaire equilibrerGlossaire(pGlossaire a) {
     if (a->eq >= 2) {
         if (a->fd->eq >= 0) {
-           return rotationGauche(a); 
+           return Glossaire_rotationGauche(a); 
         } else {
-            return doubleRotationGauche(a); 
+            return Glossaire_doubleRotationGauche(a); 
         }
     } else if (a->eq <= -2) {
         if (a->fg->eq <= 0) {
-            return rotationDroite(a); 
+            return Glossaire_rotationDroite(a); 
         } else {
-            return doubleRotationDroite(a);
+            return Glossaire_doubleRotationDroite(a);
         }
     }
     return a; 
@@ -167,7 +167,7 @@ Troncon* creerTroncon(const char *id, double fuite){
 
 void ajouter_enfant(Troncon* parent, Troncon* enfant){
     Enfant* nv = malloc(sizeof(Enfant));
-    if (nouveau_enfant == NULL){
+    if (nv == NULL){
         printf("Erreur d'allocation de mémoire");
         exit(1);
     }
@@ -177,4 +177,23 @@ void ajouter_enfant(Troncon* parent, Troncon* enfant){
     parent->nb_enfants ++;
 }
 
-*/
+double calcul_fuites (Troncon* parent, double Volume){
+    if (parent == NULL){
+        exit(1);
+    }
+    else{
+        double perte_locale = Volume * parent->fuite;
+        double total_fuite = perte_locale;
+        double volume_restant = Volume - perte_locale;
+        if (parent->nb_enfants >0){
+           double separation = volume_restant / parent->nb_enfants; 
+            Enfant* e= parent->enfants;
+            while (e != NULL){
+            total_fuite +=calcul_fuites(e->noeud, separation);
+            e = e->suivant;
+        }
+        }
+        return volume_restant;
+    }
+}
+

@@ -1,11 +1,10 @@
 #define FUITES_H
 
 #include "main.h"
- /*
 // Arbre K-aire
 typedef struct Enfant {
     struct Troncon* noeud;
-    struct Enfant* suivant
+    struct Enfant* suivant;
 } Enfant;
 
 typedef struct Troncon {
@@ -26,5 +25,5 @@ typedef struct Glossaire {
 } Glossaire;
 
 typedef struct Glossaire* pGlossaire;
-*/
+
 
