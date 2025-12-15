@@ -76,7 +76,22 @@ afifchageInit(){
 erreur() {
     printf "%b\n" "${ROUGE}$1${RESET}" >> output/stderr
 }
+fuites_tri() { #vu qu'ici on a besoin de tous les tronçons liés à l'usine  on ne peut pas utiliser un filtrage classique
+    if (( $# != 1)); then
+    echo "Pb argument"
+    echo "Exemple d'utilisation : Facility complex #RH400057F"
+    echo "Usage: fuites_tri <Type ID_Usine>"
+    return 1
+    fi
+    type=$(echo "$1" | awk '{print $1}') #awk sert à séparer des chaînes de caractères avec leurs espaces afin de pouvoir créer des id 
+    id=$(echo "$1" | awk '{print $2}')
+     if ! grep -qw "$id" ./c-wildwater_v3.dat; then #grep q renvoie 0 en cas de réussite ou 1 si le mot n'est pas dans la liste
+        echo "Usine non existante"
+        return 1
+    fi
+      grep -w "$id" ./c-wildwater_v3.dat #grep w renvoie exactement les lignes contenant cette chaîne de caractère (AKA l'ID)
 
+}
 filtrage() {
     if (( $# != 1 )); then
         echo "Erreur : manque d'argument" 
@@ -147,3 +162,4 @@ trie(){
             done
     esac
 }
+
