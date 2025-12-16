@@ -83,7 +83,7 @@ int main(int argc, char* argv[]) {
     }
     // Gestion des fuites
 
-    else if (strcmp(type_traitement, "leaks") == 0) {
+    else if (strcmp(type_traitement, "leaks") == 0) {  //regarde si l'utilisateur a entré leaks en argument
     printf("Traitement des leaks %s...\n", argv[2]);
     char* id_usine = argv[2];
         pGlossaire glossaire = NULL;

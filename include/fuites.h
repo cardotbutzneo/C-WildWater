@@ -1,6 +1,5 @@
+#ifndef FUITES_H
 #define FUITES_H
-
-#include "main.h"
 // Arbre K-aire
 typedef struct enfant {
     struct Troncon* noeud;
@@ -25,5 +24,20 @@ typedef struct Glossaire {
 } Glossaire;
 
 typedef struct Glossaire* pGlossaire;
+pGlossaire creerGlossaire(const char* id, Troncon* adresse);
+pGlossaire Glossaire_rotationGauche(pGlossaire a);
+pGlossaire Glossaire_rotationDroite(pGlossaire a);
+pGlossaire Glossaire_doubleRotationGauche(pGlossaire a);
+pGlossaire Glossaire_doubleRotationDroite(pGlossaire a);
+pGlossaire equilibrerGlossaire(pGlossaire a);
+pGlossaire insertionGlossaire(pGlossaire a, Troncon* adresse, const char* id, int *h);
+void libererGlossaire(pGlossaire a);
+Troncon* rechercheGlossaire(pGlossaire a, const char* id);
+Troncon* creerTroncon(const char *id, double fuite);
+void ajouter_enfant(Troncon* parent, Troncon* enfant);
+double propagation (Troncon* parent, double Volume);
+double calcul_fuites(pGlossaire a, const char* id);
+void libererReseau(Troncon* troncon);
 int traitement_ligne_fuite(const char* buffer,char* parent_type, char* parent_id,char* enfant_type, char* enfant_id,char* service_type, char* service_id,char* dash, double* fuite);
 
+#endif
