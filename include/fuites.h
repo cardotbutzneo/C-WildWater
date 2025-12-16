@@ -2,9 +2,9 @@
 
 #include "main.h"
 // Arbre K-aire
-typedef struct Enfant {
+typedef struct enfant {
     struct Troncon* noeud;
-    struct Enfant* suivant;
+    struct enfant* suivant;
 } Enfant;
 
 typedef struct Troncon {
@@ -25,5 +25,5 @@ typedef struct Glossaire {
 } Glossaire;
 
 typedef struct Glossaire* pGlossaire;
-
+int traitement_ligne_fuite(const char* buffer,char* parent_type, char* parent_id,char* enfant_type, char* enfant_id,char* service_type, char* service_id,char* dash, double* fuite);
 

@@ -11,7 +11,7 @@
 #include "fonction.h"
 #include "histo.h"
 #include "couleurs.h"
-
+#include "fuites.h"
 //constante
 #define MAX_CMP 5
 

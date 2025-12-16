@@ -83,11 +83,49 @@ int main(int argc, char* argv[]) {
     }
     // Gestion des fuites
 
-    else if (strcmp(type_traitement,"leaks") == 0){
+    else if (strcmp(type_traitement, "leaks") == 0) {
+    printf("Traitement des leaks %s...\n", argv[2]);
+    char* id_usine = argv[2];
+        pGlossaire glossaire = NULL;
+    int h = 0;
+    char buffer[1024];
+    while (fgets(buffer, sizeof(buffer), stdin)) {
+        char parent_type[32], parent_id[64],enfant_type[32], enfant_id[64],service_type[32], service_id[64],dash[8];
+        double fuite = 0.0;
 
-        printf("Traitement des leaks...\n");
-        return 0;
-
+        if (traitement_ligne_fuite(buffer, parent_type, parent_id,enfant_type, enfant_id,service_type, service_id, dash, &fuite)) {
+            Troncon* parent = NULL;
+            if (strcmp(parent_id, "-") != 0) {
+                parent = rechercheGlossaire(glossaire, parent_id);
+                if (!parent) {
+                    parent = creerTroncon(parent_id, 0.0); //Nécessaire sinon il se peut qu'on insère qqch de null dns l'AVL et bonjour la misère
+                }
+                glossaire = insertionGlossaire(glossaire, parent, parent_id, &h);
+            }
+            Troncon* enfant = NULL;
+            if (strcmp(enfant_id, "-") != 0) {
+                enfant = rechercheGlossaire(glossaire, enfant_id);
+                if (!enfant) {
+                    enfant = creerTroncon(enfant_id, fuite); //Pareil ici
+                }
+                glossaire = insertionGlossaire(glossaire, enfant, enfant_id, &h);
+            }
+            if (parent && enfant) { //(si les deux ne sont pas null)
+                ajouter_enfant(parent, enfant);
+            }
+        } else {
+            fprintf(stderr, "Ligne mal formée : %s", buffer);
+        }
     }
+
+    Troncon* usine = rechercheGlossaire(glossaire, id_usine);
+    if (!usine) {
+        fprintf(stderr, "Usine non trouvée : %s\n", id_usine);
+    } else {
+        double total_fuites = propagation(usine, usine->volume);
+        printf("Fuites totales pour %s : %f\n", id_usine, total_fuites);
+    }
+    libererGlossaire(glossaire);
+}
     return 0;
 }

@@ -223,3 +223,17 @@ void libererReseau(Troncon* troncon){
     free(troncon);
 }
 
+int traitement_ligne_fuite(const char* buffer,char* parent_type, char* parent_id,char* enfant_type, char* enfant_id,char* service_type, char* service_id,char* dash, double* fuite) {
+
+    if (!buffer || !parent_type || !parent_id || !enfant_type || !enfant_id || !service_type || !service_id || !dash || !fuite) {
+    return 0; // erreur
+    }
+int nb = sscanf(buffer,"%31[^#]#%63[^;];%31[^#]#%63[^;];%31[^#]#%63[^;];%7[^;];%lf",parent_type, parent_id,enfant_type, enfant_id,service_type, service_id,dash, fuite);
+if (nb < 7){
+    printf("Ligne mal écrite \n");
+    return(0);
+}
+else{
+    return (1);
+}
+}
