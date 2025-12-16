@@ -129,7 +129,6 @@ void libererGlossaire(pGlossaire a){
     if(a->fg != NULL){
        libererGlossaire(a->fg);
     }
-    free(a->adresse);
     free(a->id);
     free(a); 
 }
