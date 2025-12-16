@@ -177,7 +177,7 @@ void ajouter_enfant(Troncon* parent, Troncon* enfant){
     parent->nb_enfants ++;
 }
 
-double calcul_fuites (Troncon* parent, double Volume){
+double propagation (Troncon* parent, double Volume){
     if (parent == NULL){
         exit(1);
     }
@@ -189,11 +189,23 @@ double calcul_fuites (Troncon* parent, double Volume){
            double separation = volume_restant / parent->nb_enfants; 
             Enfant* e= parent->enfants;
             while (e != NULL){
-            total_fuite +=calcul_fuites(e->noeud, separation);
+            total_fuite +=propagation(e->noeud, separation);
             e = e->suivant;
             }
         }
-        return volume_restant;
+        return total_fuite;
+    }
+}
+
+double calcul_fuites(pGlossaire a, const char* id){
+    if(a == NULL || id == NULL){
+        return -1.0;
+    }
+    Troncon* troncon = rechercheGlossaire(a, id);
+    if (troncon == NULL){
+        return -1.0;
+    } else {
+        return propagation(troncon, troncon->volume);
     }
 }
 
