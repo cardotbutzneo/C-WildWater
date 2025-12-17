@@ -15,7 +15,7 @@ verifDependance() {
             echo -e "${ROUGE}Erreur : La dépendance <$cmd> n'est pas installée. Veuillez l'installer et réessayer. ${RESET}"
             echo "Pour compiler sans les dépendances ajoutez '--force'."
             echo "Exemple : ./launch.sh [arg1] [arg2] --force -> compilation sans dépendances."
-            echo -e "${ROUGE}Attention ! : Certaine fonctionalité ne seront pas présentes.${RESET}"
+            echo -e "${ROUGE}Attention ! : Certaines fonctionnalités ne seront pas présentes.${RESET}"
             return 1
         fi
     done
