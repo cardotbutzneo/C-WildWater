@@ -122,6 +122,7 @@ if [ "$2" = "leaks" ]; then
         echo "Erreur : Identifiant de l'usine attendu pour les leaks"
         exit 1
     fi
+    echo "$3"
     fuites_tri "$3"
     exit 0
 fi

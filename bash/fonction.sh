@@ -90,7 +90,8 @@ fuites_tri() { #vu qu'ici on a besoin de tous les tronçons liés à l'usine  on
         echo "Usine non existante"
         return 1
     fi
-    grep -wF "$id" ./c-wildwater_v3.dat | ./main "leaks" "$2" 2>> output/stderr  #grep w renvoie exactement les lignes contenant cette chaîne de caractère (AKA l'ID)
+    echo "$1"
+    grep -wF "$id" ./c-wildwater_v3.dat | ./main "leaks" "$1" 2>> output/stderr  #grep w renvoie exactement les lignes contenant cette chaîne de caractère (AKA l'ID)
     return 0
 
 }
