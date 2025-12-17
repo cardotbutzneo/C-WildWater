@@ -2,30 +2,30 @@
 #include "../include/fuites.h"
 #include <string.h>
 
-
+// Création d'un noeud d'AVL en prenant un identifiant et une adresse pour créer le glossaire.
 pGlossaire creerGlossaire(const char* id, Troncon* adresse){ 
     if (adresse == NULL || id == NULL){ 
-        return NULL;
+        return NULL; // Si l'adresse ou l'identifiant est nul, il n'y a aucune raison de créer l'AVL.
     }
-    pGlossaire nouveau = malloc(sizeof(Glossaire));
+    pGlossaire nouveau = malloc(sizeof(Glossaire)); 
     if (nouveau == NULL){
         printf("Erreur d'allocation de mémoire");
-        exit(1);
+        exit(1); // Arrêt de la fonction en cas d'erreur d'allocation de mémoire.
     }
-    nouveau->id=strdup(id);
-    nouveau->adresse=adresse;
-    nouveau->fg=NULL;
-    nouveau->fd=NULL;
-    nouveau->eq=0;
+    nouveau->id=strdup(id); // Copie de l'identifiant pris en paramètre dans la variable du nouveau noeud.
+    nouveau->adresse=adresse; 
+    nouveau->fg=NULL; 
+    nouveau->fd=NULL; 
+    nouveau->eq=0; // Facteur d'équilibre initialisé à 0.
     return nouveau;
 }
 
 pGlossaire Glossaire_rotationGauche(pGlossaire a){
-    pGlossaire pivot = a->fd;
+    pGlossaire pivot = a->fd; // Le fils droit devient le pivot.
     int eq_a = a->eq, eq_p = pivot->eq;
-    a->fd = pivot->fg;
-    pivot->fg = a;
-    if (eq_p>0) {
+    a->fd = pivot->fg; // Le sous-arbre gauche du pivot devient le fils droit de 'a'
+    pivot->fg = a; // 'a' devient le fils gauche du pivot
+    if (eq_p>0) { // Mise à jour des facteurs d'équilibre
         a->eq = eq_a-eq_p-1;
     } else {
         a->eq = eq_a-0-1; 
@@ -40,14 +40,14 @@ pGlossaire Glossaire_rotationGauche(pGlossaire a){
     } else if (z <= x && z <= y) {
         eq_p = z;
     }
-    return pivot;
+    return pivot; // Le pivot devient la nouvelle racine.
 }
 
 pGlossaire Glossaire_rotationDroite(pGlossaire a){
- pGlossaire pivot = a->fg;
+ pGlossaire pivot = a->fg; // Le fils gauche devient le pivot
  int eq_a = a->eq, eq_p = pivot->eq;
- a->fg = pivot->fd;
- pivot->fd = a;
+ a->fg = pivot->fd; // Le sous-arbre droit du pivot devient le fils gauche de 'a'
+ pivot->fd = a; // 'a' devient le fils droit du pivot
  if (eq_p<0) {
    a->eq = eq_a-eq_p+1;
  } else {
@@ -65,6 +65,7 @@ pGlossaire Glossaire_rotationDroite(pGlossaire a){
  }
  return pivot;
 }
+
  pGlossaire Glossaire_doubleRotationGauche(pGlossaire a){
    a->fd = Glossaire_rotationDroite(a->fd);
    return Glossaire_rotationGauche(a);
@@ -76,26 +77,26 @@ pGlossaire Glossaire_doubleRotationDroite(pGlossaire a){
  }
 
 pGlossaire equilibrerGlossaire(pGlossaire a) {
-    if (a->eq >= 2) {
+    if (a->eq >= 2) { // Cas où le coté droit de l'arbre est déséquilibré.
         if (a->fd->eq >= 0) {
            return Glossaire_rotationGauche(a); 
         } else {
             return Glossaire_doubleRotationGauche(a); 
         }
-    } else if (a->eq <= -2) {
+    } else if (a->eq <= -2) { // Cas où le côté gauche de l'arbre est désiquilibré
         if (a->fg->eq <= 0) {
             return Glossaire_rotationDroite(a); 
         } else {
             return Glossaire_doubleRotationDroite(a);
         }
     }
-    return a; 
+    return a; // Aucun rééquilibrage nécessaire.
 }
 
-pGlossaire insertionGlossaire(pGlossaire a, Troncon* adresse, const char* id, int *h){
-    if (a == NULL){
-        *h=1;
-        return creerGlossaire(id, adresse);
+pGlossaire insertionGlossaire(pGlossaire a, Troncon* adresse, const char* id, int *h){ // Insertion d'un nouevau noeud dans l'AVL Glossaire
+    if (a == NULL){ // Cas où l'arbre est vide 
+        *h=1; // Augmentation de la hauteur suite à la création d'un nouveau noeud
+        return creerGlossaire(id, adresse); 
     }
     if (strcmp(id, a->id) < 0){
         a->fg=insertionGlossaire(a->fg, adresse, id, h);
