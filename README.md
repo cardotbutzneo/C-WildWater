@@ -47,6 +47,8 @@ Exemple de commande valide :
 ```bash
 bash launch.sh leaks "Facility complex #WI400023I"
 ````
+⚠️ Attention : les guillemets autour de l’identifiant de l’usine sont nécessaires !
+
 ## Sortie du programme
 ### Performance
 Temps d'éxécution du programme :
@@ -58,6 +60,7 @@ Le temps d'éxécution du programme peut varier d'un pc à l'autre.
 ### Sortie attendu
 A la fin de l'éxécution, le programme sort une paire de graphique, contenant les 10 usines les plus productives et les 50 les moins productives, dans le dossier gnuplot/graphique au format .png.
 Les sorties (stdin ou stderr) sont redirigées vers le nom associée dans le dossier output/
+
 
 
 
