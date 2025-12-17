@@ -11,6 +11,12 @@ Deuxième année de Pré-Ingénieur CY Tech, Semestre 3 2025-2026
 - :ledger: [Rapport de projet]
 
 ## :gear: Description
+Ce projet vise à gérer les données d’un réseau de distribution d’eau potable.
+À partir d’un fichier en entrée, le script permet :
+
+- de générer une paire de graphiques présentant les 10 usines les plus productives et les 50 usines les moins productives du réseau.
+- d'évaluer le volume total d’eau perdu en aval d’une usine donnée.
+
 
 ## :toolbox: Prérequis
 - **gcc**
@@ -41,8 +47,9 @@ Les commandes pour l'histogramme sont:
 > all
 
 La commande pour les fuites est:
-> bash launch.sh leaks "id_usine"
- 
+```
+bash launch.sh leaks "id_usine"
+```
 Exemple de commande valide :
 ```bash
 bash launch.sh leaks "Facility complex #WI400023I"
@@ -60,6 +67,7 @@ Le temps d'éxécution du programme peut varier d'un pc à l'autre.
 ### Sortie attendu
 A la fin de l'éxécution, le programme sort une paire de graphique, contenant les 10 usines les plus productives et les 50 les moins productives, dans le dossier gnuplot/graphique au format .png.
 Les sorties (stdin ou stderr) sont redirigées vers le nom associée dans le dossier output/
+
 
 
 
