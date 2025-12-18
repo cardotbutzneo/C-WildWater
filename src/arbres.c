@@ -130,34 +130,34 @@ int hauteur(pAVL a){
 }
 
 int recherche_i(pAVL avl, char* id){
-    if (!avl || !id){
+    if (!avl || !id){ // Vérification des paramètres
         printf("pointeur NULL\n");
         return 0;
     }
-    int comparaison = strcmp(avl->usine->id,id); // ligne de mort
+    int comparaison = strcmp(avl->usine->id,id); // Mis en place d'un comparateur lexicographique
     //printf(" id lu : '%s' vs '%s'\n",id,avl->usine->id);
     //if (avl->fg) printf("id du fils gauche : '%s'\n",avl->fg->usine->id);
     //if (avl->fd) printf("id du fils droit : '%s'\n",avl->fd->usine->id);
     //printf("c : %d\n",comparaison);
-    if (comparaison == 0) return 1;
-    if (comparaison > 0) return recherche_i(avl->fg,id);
-    else return recherche_i(avl->fd,id);
+    if (comparaison == 0) return 1; // Cas où les identifiants sont identiques --> la fonction retourne 1
+    if (comparaison > 0) return recherche_i(avl->fg,id); // Cas où l'identifiant recherché est plus petit --> Recherche dans le sous-arbre gauche
+    else return recherche_i(avl->fd,id); // Cas où l'identifiant recherché est plus grand --> Recherche dans le sous-arbre droit
     return -1;
 }
 
 pAVL recherche(pAVL a, const char* id) {
-    if (!a || !id){
+    if (!a || !id){ // Vérification des paramètres
         //printf("Erreur\n");
         return NULL;
     }
-    int comparateur = strcmp(id,a->usine->id);
+    int comparateur = strcmp(id,a->usine->id); // Mis en place d'un comparateur lexicographiqu
     //printf(" id lu : '%s' vs '%s'\n",a->usine->id,id);
     //if (a->fg) printf("id du fils gauche : '%s'\n",a->fg->usine->id);
     //if (a->fd) printf("id du fils droit : '%s'\n",a->fd->usine->id);
     //printf("c : %d\n",comparateur);
-    if (comparateur == 0) return a;
-    if (comparateur < 0) return recherche(a->fg,id);
-    else return recherche(a->fd,id);
+    if (comparateur == 0) return a; // Cas où les identifiants sont identiques
+    if (comparateur < 0) return recherche(a->fg,id); // Cas où l'identifiant recherché est plus petit --> Recherche dans le sous-arbre gauche
+    else return recherche(a->fd,id); // Cas où l'identifiant recherché est plus grand --> Recherche dans le sous-arbre droit
     return NULL;
 }
 
@@ -206,4 +206,5 @@ void afficherAVL(pAVL avl, int *cmp){
 
     afficherAVL(avl->fd, cmp);
 }
+
 
