@@ -26,6 +26,11 @@ for token in "$@"; do
     prev="$token"
 done
 
+if [ "$1" = "--arbo" ];then
+    arboraissance
+    exit 0
+fi
+
 if [ "$1" != "-c" ] && [ "$1" != "--clean" ]; then
     verifDependance # vérifit les dépendances (non acces aux graphiques si python pas installé)
     verif="$?"
