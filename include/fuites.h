@@ -39,6 +39,6 @@ double propagation (Troncon* parent, double Volume);
 double calcul_fuites(pGlossaire a, const char* id);
 void libererReseau(Troncon* troncon);
 int traitement_ligne_fuite(const char* buffer,char* parent, char* enfant, char* dash, double* valeur, double* fuite, double* somme);
-
+int ecriture_fichier(char* id, double volume);
 
 #endif

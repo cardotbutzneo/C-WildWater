@@ -82,7 +82,6 @@ int main(int argc, char* argv[]) {
         // --------------------------------------------------------
     }
     // Gestion des fuites
-
     else if (strcmp(type_traitement, "leaks") == 0) {
         printf("Traitement des leaks '%s'...\n", argv[2]);
         char* id_usine = argv[2];
@@ -152,11 +151,18 @@ int main(int argc, char* argv[]) {
 
         else {
             usine->volume=somme;
-            //printf("vol: %f\n", usine->volume);
             double total_fuites = calcul_fuites(glossaire, id_usine);   
-            printf(VERT"Fuites totales pour '%s' : %.3fk.m3\n"RESET, id_usine, total_fuites);
+            int verif = ecriture_fichier(id_usine, total_fuites);
+            if (verif ==2){
+                fprintf(stderr, "Usine déjà présente dans le fichier \n");
+            }
+            if (verif ==3){
+                fprintf(stderr, "Fichier vide \n");
+            }
         }
         libererGlossaire(glossaire);
+        libererReseau(usine);
     }
+    
     return 0;
 }

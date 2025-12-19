@@ -95,7 +95,7 @@ if __name__ == "__main__":
     tracer(
         data_max,
         arg,
-        f"gnuplot/graphique/graphique_10_meilleurs_{arg}.png",
+        f"graphique/graphique/graphique_10_meilleurs_{arg}.png",
         "10 meilleures usines",
         reverse=False
     )
@@ -105,7 +105,7 @@ if __name__ == "__main__":
     tracer(
         data_min,
         arg,
-        f"gnuplot/graphique/graphique_50_pires_{arg}.png",
+        f"graphique/graphique/graphique_50_pires_{arg}.png",
         "50 pires usines",
         reverse=False
     )

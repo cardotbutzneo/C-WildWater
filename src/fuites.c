@@ -194,8 +194,6 @@ double propagation(Troncon* parent, double volume) {
         while (e != NULL) {
             e->noeud->volume = part * (1.0 - e->noeud->fuite / 100.0); // Mise à jour du volume de l'enfant en fonction de sa fuite
             total_fuite += propagation(e->noeud, part);
-        //printf("ID=%s vol=%lf leaks=%lf \n ", e->noeud->id, e->noeud->volume, e->noeud->fuite);
-
             e = e->suivant;
         }
     }
@@ -279,3 +277,31 @@ int traitement_ligne_fuite(
     return 1;
 }
 
+int ecriture_fichier(char* id, double volume){
+    FILE* f;
+    char id_lu[100];
+    double volume_lu;
+    int trouve = 0;
+    f = fopen("graphique/data/fuites.dat", "a+");
+    if (f == NULL) {
+        return 3;   
+    }
+    rewind(f);
+    while (fscanf(f, "%49[^;];%lf;\n", id_lu, &volume_lu) == 2) {
+        if (strcmp(id, id_lu) == 0) {
+            trouve = 1;
+            break;
+        }
+    }
+    if (!trouve) {
+        fprintf(f, "%s;%.3f;\n", id, volume);
+        fclose(f);
+        return 2;   
+    }
+    else{
+        printf("L'usine %s est déjà existante \n", id);
+    }
+
+    fclose(f);
+    return 1;       
+}
