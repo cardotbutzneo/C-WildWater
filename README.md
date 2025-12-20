@@ -22,7 +22,7 @@ Ce projet vise à gérer les données d’un réseau de distribution d’eau pot
 - **gcc**
 - **make**
 - **bash**
-- **gnuplot** *ou* **python3** - génération de graphiques
+- **python3** - génération de graphiques
 
 ## :rocket: Téléchargement et compilation
 ### Téléchargement
@@ -68,15 +68,9 @@ Le temps d'éxécution du programme peut varier d'un pc à l'autre.
 A la fin de l'éxécution, le programme sort une paire de graphiques, dans le dossier gnuplot/graphique au format .png.
 Les sorties (stdin ou stderr) sont redirigées vers le nom associée dans le dossier output/
 
-
-
-
-
-
-
-
-
-
-
-
-
+## ℹ️ Information supplémentaire
+Vous disposez d'un fichier 'test.sh' dans le dossier bash/. Celui-ci permet de lancer toutes les commandes disponibles afin de tester le programme.
+Les graphiques sont sauvegarder dans un dossier test/ <br>
+Liste des commandes lancées :
+- histo (max/src/real/all)
+- leaks "Module #OG100951D"
