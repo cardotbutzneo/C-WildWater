@@ -36,7 +36,7 @@ pGlossaire Glossaire_rotationGauche(pGlossaire a){
     if (x <= y && x <= z){
         eq_p = x;
     } else if (y <= x && y <= z) {
-    eq_p = y;
+        eq_p = y;
     } else if (z <= x && z <= y) {
         eq_p = z;
     }
@@ -44,31 +44,31 @@ pGlossaire Glossaire_rotationGauche(pGlossaire a){
 }
 
 pGlossaire Glossaire_rotationDroite(pGlossaire a){
- pGlossaire pivot = a->fg; // Le fils gauche devient le pivot
- int eq_a = a->eq, eq_p = pivot->eq;
- a->fg = pivot->fd; // Le sous-arbre droit du pivot devient le fils gauche de 'a'
- pivot->fd = a; // 'a' devient le fils droit du pivot
- if (eq_p<0) { // Mis à jour des facteurs d'équilibre
-   a->eq = eq_a-eq_p+1;
- } else {
-    a->eq = eq_a-0+1; 
- }
- int x = eq_a-2;
- int y = eq_a+eq_p-2;
- int z = eq_p-2;
- if (x >= y && x >= z){
-    eq_p = x;
- } else if (y >= x && y >= z) {
-    eq_p = y;
- } else if (z >= x && z >= y) {
-    eq_p = z;
- }
- return pivot; // Le pivot devient la nouvelle racine
+    pGlossaire pivot = a->fg; // Le fils gauche devient le pivot
+    int eq_a = a->eq, eq_p = pivot->eq;
+    a->fg = pivot->fd; // Le sous-arbre droit du pivot devient le fils gauche de 'a'
+    pivot->fd = a; // 'a' devient le fils droit du pivot
+    if (eq_p<0) { // Mis à jour des facteurs d'équilibre
+        a->eq = eq_a-eq_p+1;
+    } else {
+        a->eq = eq_a-0+1; 
+    }
+    int x = eq_a-2;
+    int y = eq_a+eq_p-2;
+    int z = eq_p-2;
+    if (x >= y && x >= z){
+        eq_p = x;
+    } else if (y >= x && y >= z) {
+        eq_p = y;
+    } else if (z >= x && z >= y) {
+        eq_p = z;
+    }
+    return pivot; // Le pivot devient la nouvelle racine
 }
 
  pGlossaire Glossaire_doubleRotationGauche(pGlossaire a){
-   a->fd = Glossaire_rotationDroite(a->fd);
-   return Glossaire_rotationGauche(a);
+    a->fd = Glossaire_rotationDroite(a->fd);
+    return Glossaire_rotationGauche(a);
  }
 
 pGlossaire Glossaire_doubleRotationDroite(pGlossaire a){
@@ -110,7 +110,7 @@ pGlossaire insertionGlossaire(pGlossaire a, Troncon* adresse, const char* id, in
     }
     if(*h != 0){ // Mis à jour du facteur d'équilibre
         a->eq += *h;
-        a=equilibrerGlossaire(a); 
+        a = equilibrerGlossaire(a); 
         if(a->eq == 0){ // Mis à jour de la hauteur
             *h=0;
         } else {
@@ -237,6 +237,10 @@ int traitement_ligne_fuite(
     double* fuite,
     double* somme
 ) {
+    if (!buffer || !parent || !enfant || !service || !valeur || !fuite || !somme){
+        printErreur("Pointeur NULL dans traitement_ligne_fuite");
+        return 0;
+    }
     char valeur_str[64];
     char fuite_str[64];
 
@@ -249,7 +253,7 @@ int traitement_ligne_fuite(
         return 0;
     }
     //Vérif si source
-    if (strcmp(parent,"-")==0 && strcmp(valeur_str, "-") !=0 && strcmp(fuite_str, "-") !=0) {
+    if (strcmp(parent,"-")==0 && strcmp(valeur_str, "-") !=0 && strcmp(fuite_str, "-") != 0) {
         if(somme) {
             double volume = atof(valeur_str);
             double fuite  = atof(fuite_str) / 100.0;
@@ -279,7 +283,7 @@ int traitement_ligne_fuite(
 
 int ecriture_fichier(char* id, double volume){
     FILE* f;
-    char id_lu[100];
+    char id_lu[128];
     double volume_lu;
     int trouve = 0;
     f = fopen("graphique/data/fuites.dat", "a+");

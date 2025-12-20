@@ -24,6 +24,7 @@ typedef struct Glossaire {
 } Glossaire;
 
 typedef struct Glossaire* pGlossaire;
+
 pGlossaire creerGlossaire(const char* id, Troncon* adresse);
 pGlossaire Glossaire_rotationGauche(pGlossaire a);
 pGlossaire Glossaire_rotationDroite(pGlossaire a);

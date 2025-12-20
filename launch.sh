@@ -3,6 +3,8 @@
 source "bash/cmd.sh"
 source "bash/fonction.sh"
 
+debut=$(date +%s%N)
+
 liste_cmd=("histo" "leaks" "-r" "--run" "-c" "--clean")
 
 if [ "$1" = "-h" ] || [ "$1" = "--help" ];then # affiche l'aide global si demandé
@@ -70,7 +72,7 @@ if [ "$1" = "-c" ] || [ "$1" = "--clean" ]; then # clean
         echo -e "${ROUGE}Attention : vous supprimez les graphiques et fichiers temporaires${RESET}"
         read -p "Confirmer ce choix [y/n]: " confirm
         if [ "$confirm" = "y" ]; then
-            rm -rf graphique/graphique/* graphique/data/*
+            rm -rf graphique/graphique/* graphique/data/* test/*
             echo "Suppression terminée"
         else
             echo "Opération annulée"
@@ -106,11 +108,13 @@ if [ "$2" = "histo" ]; then
         aide "histo"
         exit 1
     fi
-    time trie_graphique "$2" "$arg" "$1" # lance le c
-    if [ "$4" = ".p" ]; then
-        python3 graphique/run.py "$arg" #graphique sur python
+    trie_graphique "$2" "$arg" "$1" # lance le c
+    
+    python3 graphique/run.py "$arg" #graphique sur python
+    fin=$(date +%s%N)
+    duree=$(( (fin - debut) / 1000000 ))
+    echo "Exécution du programme en ${duree} ms"
     exit 0
-    fi
 fi
 
 
@@ -131,9 +135,13 @@ if [ "$2" = "leaks" ]; then # fuites
         echo "Erreur : Identifiant de l'usine attendu pour les leaks"
         exit 1
     fi
-    time fuites_tri "$1" "$3"
+    fuites_tri "$1" "$3"
+    fin=$(date +%s%N)
+    duree=$(( (fin - debut) / 1000000 ))
+    echo "Exécution du programme en ${duree} ms"
     exit 0
 fi
 
 echo "Commande non trouvée"
+
 exit 1

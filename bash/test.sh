@@ -2,7 +2,7 @@
 
 source bash/fonction.sh
 
-start=$(date +%s)
+debut=$(date +%s%N)
 
 echo "Compilation"
 bash launch.sh -r
@@ -18,12 +18,18 @@ clear
 echo "----------------------"
 echo "Test des histogrammes"
 
-bash launch.sh c-wildwater_v3.dat histo all .p
+bash launch.sh c-wildwater_v3.dat histo max
+bash launch.sh c-wildwater_v3.dat histo src
+bash launch.sh c-wildwater_v3.dat histo real
+bash launch.sh c-wildwater_v3.dat histo all
 
 if [ "$?" -eq 1 ];then
     echo "Probleme dans la création de graphique"
     exit 1
 fi
+
+mkdir test/ &> /dev/null
+mv graphique/graphique/* test/ &> /dev/null
 
 echo "----------------------"
 echo "Test des leaks avec 'Module #OG100951D'"
@@ -36,15 +42,15 @@ if [ "$?" -eq 1 ];then
     exit 1
 fi
 
-echo "Fin des tests"
 echo "----------------------"
+echo -e "${JAUNE}Fin des tests${RESET}"
 
-bash launch.sh -c -a
+#bash launch.sh -c -a
 
-end=$(date +%s)
+fin=$(date +%s%N)
 
-temp=$((temp + end - start))
+temps=$(( (fin - debut) / 1000000 ))
 
-echo -e "${VIOLET}Temps de fonctionnement (graphique + fuite) : ${temp} s${RESET}"
+echo -e "${VIOLET}Temps de fonctionnement (graphique + fuite) : ${temps} ms${RESET}"
 
 exit 0

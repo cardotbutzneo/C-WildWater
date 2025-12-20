@@ -6,13 +6,10 @@
 
 void printErreur(const char *format);
 int trieDict(const void* a, const void* b);
-//void récupérer_max(pAVL avl, Dictionnaire dict[MAX_CMP], int* cmp_max);
-//void récupérer_max(pAVL avl, Dictionnaire dict[MAX_CMP], int* cmp_max);
 pUsine* nUsinesOptimise(pAVL avl, int n, char *critere, int max, int *taille);
 void remplirAVL(pAVL* avl);
 void lireFichier(pAVL* avl);
 void trim(char* str); // made by chatpgt
 void ecrireUsine(pUsine *dict, int taille, char destination[64], int type);
-//void jolieAffichage(Dictionnaire* dict, int type, int taile, char* critere);
-//void afficherDict(Dictionnaire* dict, int taille);
+
 #endif

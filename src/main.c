@@ -20,8 +20,6 @@ int main(int argc, char* argv[]) {
             return 1;
         }
 
-        // --------------------------------------------------------
-        // Lecture et remplissage de l'AVL
         pAVL avl = NULL;
         printf("Lecture en cours...\n");
         lireFichier(&avl);
@@ -34,9 +32,6 @@ int main(int argc, char* argv[]) {
         remplirAVL(&avl);
         printf("Remplissage réussi\n");
 
-        // --------------------------------------------------------
-        // Détermination du critère de tri
-
         if (strcmp(critere, "max") == 0 || strcmp(critere,"all") == 0) {
             critere_trie_global = MAX;
             critere = "max";
@@ -45,8 +40,7 @@ int main(int argc, char* argv[]) {
         } else if (strcmp(critere, "real") == 0) {
             critere_trie_global = REAL;
         }
-        // --------------------------------------------------------
-        // Récupération des meilleures et pires usines
+
         int taille_m = 0, taille_p = 0;
         int n_max = 10;
         int n_min = 50;
@@ -57,33 +51,27 @@ int main(int argc, char* argv[]) {
         if (!n_meilleurs || !n_pire) {
             fprintf(stderr, "Erreur lors de la récupération des usines optimisées.\n");
             libererAVL(avl);
+            if (n_meilleurs) free(n_meilleurs);
+            if (n_pire) free(n_pire);
             return 1;
         }
 
-        // --------------------------------------------------------
-        // Tri des tableaux
-        //qsort(n_meilleurs, taille_m, sizeof(Usine*), trieDict);
-        //qsort(n_pire, taille_p, sizeof(Usine*), trieDict);
-
-        // --------------------------------------------------------
-        // Écriture dans les fichiers
         char chemin[64] = "";
         ecrireUsine(n_meilleurs, taille_m, chemin, 1);
         chemin[0] = '\0';
         ecrireUsine(n_pire, taille_p, chemin, 0);
 
-        // --------------------------------------------------------
         // Libération mémoire
         free(n_meilleurs);
         free(n_pire);
         libererAVL(avl);
         printf(ROUGE"Mémoire libérée\n"RESET);
 
-        // --------------------------------------------------------
     }
     // Gestion des fuites
     else if (strcmp(type_traitement, "leaks") == 0) {
         printf("Traitement des leaks '%s'...\n", argv[2]);
+
         char* id_usine = argv[2];
         pGlossaire glossaire = NULL;
         int h = 0;
@@ -146,14 +134,14 @@ int main(int argc, char* argv[]) {
 
         Troncon* usine = rechercheGlossaire(glossaire, id_usine);
         if (!usine) {
-            fprintf(stderr, "Usine non trouvée : %s\n", id_usine);
+            printErreur("Usine non trouvé");
         } 
 
         else {
             usine->volume=somme;
             double total_fuites = calcul_fuites(glossaire, id_usine);   
             int verif = ecriture_fichier(id_usine, total_fuites); 
-            if (verif ==3){
+            if (verif == 3){
                 fprintf(stderr, "Fichier vide \n");
             }
         }

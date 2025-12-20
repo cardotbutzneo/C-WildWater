@@ -45,7 +45,7 @@ BarreDeProgression() {
     return 0
 }
 
-afifchageInit(){
+afifchageInit(){ # idem
     echo "Adding extra memory RAM for better performence"
     BarreDeProgression 15
     if [[ "$?" -eq 0 ]];then
@@ -69,9 +69,7 @@ afifchageInit(){
     else 
         echo "We detect a probem with Chatgpt, retry later"
     fi
-    echo
-    echo
-    echo "Go outside touching grass, lol player 🐒 🐒"
+
 }
 
 ###
@@ -87,11 +85,10 @@ fuites_tri() { #vu qu'ici on a besoin de tous les tronçons liés à l'usine  on
     echo "Usage: fuites_tri <Type ID_Usine>"
     return 1
     fi
-    if ! grep -qwF "$2" ./"$1"; then #grep q renvoie 0 en cas de réussite ou 1 si le mot n'est pas dans la liste
-        echo "Usine non existante"
-        return 1
-    fi
     grep -wF "$2" ./"$1" | ./main "leaks" "$2" > output/stdout 2> output/stderr  #grep w renvoie exactement les lignes contenant cette chaîne de caractère (AKA l'ID)
+    if [ "$?" -eq 1 ];then
+        echo "Erreur dans le C"
+    fi
     return 0
 
 }
@@ -108,6 +105,9 @@ trie_graphique(){ # génère le graphique
         grep -E "^-;[^;]*;[^-;]*;[^-;]*;[^;]*" ./"$3"
     } | ./main "histo" "$2" > output/stdout 2> output/stderr
 
-    return 0
-    }
+    if [ "$?" -eq 1 ];then
+    echo "Erreur dans le C"
+    fi
 
+    return 0
+}

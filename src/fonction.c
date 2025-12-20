@@ -5,19 +5,17 @@
 #include <time.h>
   
 
-void printErreur(const char *msg) {
+void printErreur(const char *msg) { // affiche une erreur dans stderr
     if (!msg) return;
     time_t t = time(NULL);
     struct tm *date = localtime(&t);
     char champ_date[32];
-    strftime(champ_date, sizeof(champ_date), "%Y-%m-%d %H:%M:%S", date);
+    strftime(champ_date, sizeof(champ_date), "%Y-%m-%d %H:%M:%S", date); // utilise le format ISO 8601 pour la date
 
     fprintf(stderr, "[%s] Erreur : %s\n", champ_date, msg);
 }
 
-// made by chatgpt (j'ai compris !)
-// Fonction utilitaire pour trouver l'index de la valeur extrême dans le tableau
-int indexExtreme(pUsine* tab, int n, int max, int critere) {
+int indexExtreme(pUsine* tab, int n, int max, int critere) { // récupère un index pour savoir quel usine sortir du tableau
     int idx = 0;
 
     for (int i = 1; i < n; i++) {
@@ -35,7 +33,7 @@ int indexExtreme(pUsine* tab, int n, int max, int critere) {
     return idx;
 }
 
-void remplirTopN(pAVL avl, pUsine* top, int n, int *cmp, char *critere, int max) {
+void remplirTopN(pAVL avl, pUsine* top, int n, int *cmp, char *critere, int max) { // rempli un tableau de n usines en fonction de critère de trie
     if (!avl) return;
 
     remplirTopN(avl->fg, top, n, cmp, critere, max);
@@ -55,7 +53,7 @@ void remplirTopN(pAVL avl, pUsine* top, int n, int *cmp, char *critere, int max)
         (*cmp)++;
     }
     else {
-        int idx = indexExtreme(top, n, max, crit);
+        int idx = indexExtreme(top, n, max, crit); // échange la place avec une meilleur/pire
 
         unsigned long vref =
             (crit == 0) ? top[idx]->capacite :
@@ -82,7 +80,7 @@ pUsine* nUsinesOptimise(pAVL avl, int n, char *critere, int max, int *taille) {
     return top;
 }
 
-int trieDict(const void* a, const void* b) {
+int trieDict(const void* a, const void* b) { // fonction de trie pour qsort (ancien code --> le trie se fait dans le code python)
 
     const Usine* ua = *(const Usine**)a;
     const Usine* ub = *(const Usine**)b;
@@ -109,37 +107,34 @@ int trieDict(const void* a, const void* b) {
 
 }
 
-void lireFichier(pAVL *avl) {
+void lireFichier(pAVL *avl) { // lit stdin et ajoute les usines à l'avl
 
     if (!avl) {
         printErreur("Erreur : AVL NULL\n");
         return;
     }
 
-    char buffer[256];
+    char buffer[1024];
 
     while (fgets(buffer, sizeof(buffer), stdin)) {
 
-        trim(buffer);  // IMPORTANT : enlever \n avant tout
+        trim(buffer); 
 
-        // ---- Détection du séparateur ----
-        if (strcmp(buffer, "sources") == 0) {
+        if (strcmp(buffer, "sources") == 0) { // si on trouve le mot de transition on passe au remplissage de l'avl
             remplirAVL(avl);
             return;
         }
 
-        // ---- Allocation sécurisée ----
-        pUsine usine = calloc(1, sizeof(Usine));   // sécurise tous les champs
+        pUsine usine = calloc(1, sizeof(Usine));
         if (!usine) {
             printErreur("Erreur : malloc Usine\n");
             return;
         }
 
-        // ---- Parsing ----
         char *token = strtok(buffer, ";");
         int i = 0;
 
-        while (token) {
+        while (token) { // lit les différents champs de la ligne
             trim(token);
 
             switch (i) {
@@ -162,18 +157,14 @@ void lireFichier(pAVL *avl) {
             continue;
         }
 
-        // ---- Initialisation des volumes ----
         usine->v_capte = 0;
         usine->v_traite = 0;
 
-        // ---- Insertion dans l’AVL ----
         *avl = ajouterAVLUsine(*avl, usine);
     }
 }
 
-
-
-void remplirAVL(pAVL *avl) {
+void remplirAVL(pAVL *avl) { // remplit l'avl 
 
     if (!avl) {
         printErreur("Erreur : AVL NULL\n");
@@ -194,28 +185,25 @@ void remplirAVL(pAVL *avl) {
         token = strtok(NULL, ";");
         if (!token) continue;
 
-        // ---- Récupérer ID-----
         token = strtok(NULL, ";");   // 3e token = ID
         if (!token) continue;
         trim(token);
 
         pAVL res = recherche(*avl, token);
         if (!res || !res->usine) {
-            continue;  // ID introuvable → OK
+            continue;  // si ID introuvable on continue quand meme
         }
 
-        // ---- Volume capté ----
         token = strtok(NULL, ";");
         if (token) {
             trim(token);
             res->usine->v_capte += strtoul(token, NULL, 10);
         }
 
-        // ---- % de perte ----
         token = strtok(NULL, ";");
         if (token) {
             trim(token);
-            float perte = atof(token);
+            float perte = atof(token); // récupère le % de fuite
             res->usine->v_traite = res->usine->v_capte * (1.0 - perte / 100.0);
         }
     }
@@ -251,7 +239,7 @@ void ecrireUsine(pUsine *dict, int taille, char destination[64], int type){ // (
     fclose(f);
 }
 
-void trim(char* str) {
+void trim(char* str) { // sécurise une chaine de caractère en enlevant les caracteres inutiles
     if (!str) return;
     // supprime espaces et \n en fin
     size_t len = strlen(str);
