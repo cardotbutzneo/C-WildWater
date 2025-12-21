@@ -247,7 +247,7 @@ int traitement_ligne_fuite(
     int nb = sscanf(buffer,
         "%63[^;];%63[^;];%63[^;];%63[^;];%63[^;\n]",
         parent, enfant, service, valeur_str, fuite_str
-    );
+    ); //parsing de la ligne
 
     if (nb != 5) {
         return 0;
@@ -256,10 +256,8 @@ int traitement_ligne_fuite(
     if (strcmp(parent,"-")==0 && strcmp(valeur_str, "-") !=0 && strcmp(fuite_str, "-") != 0) {
         if(somme) {
             double volume = atof(valeur_str);
-            double fuite  = atof(fuite_str) / 100.0;
-
-            *somme += volume * (1.0 - fuite);
-
+            double fuite_parent = atof(fuite_str) / 100.0; 
+            *somme += volume * (1.0 - fuite_parent);
         }
         
     }
